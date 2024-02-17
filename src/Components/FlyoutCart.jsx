@@ -2,9 +2,11 @@
 
 import { useQuery } from "@/Hooks/useQuery";
 import { CartItem } from "@/Components/CartItem";
+import { useCart } from "@/Hooks/useCart";
 
 export const FlyoutCart = () => {
   const { cartOpen, handleCartToggle, productsData } = useQuery();
+  const { cart } = useCart();
 
   return (
     <div
@@ -24,13 +26,14 @@ export const FlyoutCart = () => {
               Shopping Cart
             </h2>
             <ul>
-              {productsData.products?.map((item) => (
+              {cart?.map((item) => (
                 <CartItem
                   key={item.id}
                   thumbnail={item.thumbnail}
                   title={item.title}
                   price={item.price}
                   id={item.id}
+                  quantity={item.quantity}
                 />
               ))}
             </ul>

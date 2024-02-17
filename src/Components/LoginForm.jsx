@@ -12,6 +12,9 @@ export const LoginForm = () => {
 
     await supabase.auth.signInWithOtp({
       email,
+      options: {
+        redirectTo: "http://localhost:3000/auth/callback",
+      },
     });
   };
 
@@ -24,6 +27,7 @@ export const LoginForm = () => {
         onChange={(e) => setEmail(e.target.value)}
         className="text-black"
       />
+      <button type="submit">Log in</button>
     </form>
   );
 };

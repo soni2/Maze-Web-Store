@@ -1,10 +1,10 @@
 "use client";
 
 import "./footer.css";
-import { useQuery } from "@/Hooks/useQuery";
+import { useCart } from "@/Hooks/useCart";
 
 export const Footer = () => {
-  const { productsData } = useQuery();
+  const { cart } = useCart();
 
-  return <div className="footer">{JSON.stringify(productsData)}</div>;
+  return <div className="footer">{JSON.stringify(cart)}</div>;
 };

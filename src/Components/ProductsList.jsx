@@ -3,20 +3,13 @@ import "./products.css";
 
 import { useQuery } from "@/Hooks/useQuery";
 import { useRouter } from "next/navigation";
+import { useCart } from "@/Hooks/useCart";
 
 export function ProductsList() {
   const router = useRouter();
 
-  const {
-    loading,
-    productsData,
-    currentPage,
-    queries,
-    setQueries,
-    limit,
-    minPrice,
-    category,
-  } = useQuery();
+  const { loading, productsData, currentPage, queries, setQueries } =
+    useQuery();
   const { products, previousPage, totalPages, nextPage } = productsData;
 
   const page = parseInt(queries.page);
@@ -50,15 +43,35 @@ export function ProductsList() {
     }));
   };
 
+  const { setCart } = useCart();
+  function addToCart(e) {
+    setCart((prevState) => [
+      ...prevState,
+      {
+        title: e.title,
+        thumbnail: e.thumbnail,
+        id: e.id,
+        price: e.price,
+        quantity: 1,
+      },
+    ]);
+  }
+
   return (
     <main className="flex flex-col items-center w-4/5">
       <div className="products">
         <ul className="grid grid-cols-4 gap-4">
           {!loading ? (
             products?.map((product) => (
-              <li key={product.id}>
+              <li key={product.id} className="flex flex-row justify-between">
                 <img src={product.thumbnail} alt={product.title} />
                 <strong>{product.title}</strong> - ${product.price}
+                <button
+                  className="bg-slate-700 py-2 rounded-md hover:bg-slate-900"
+                  onClick={() => addToCart(product)}
+                >
+                  Add To Cart
+                </button>
               </li>
             ))
           ) : (
@@ -86,37 +99,6 @@ export function ProductsList() {
         >
           Next
         </button>
-        {/* {!previousPage ? (
-          <button
-            className="bg-gray-400 text-white font-bold py-2 px-4 mr-2 rounded"
-            disabled
-          >
-            Previous
-          </button>
-        ) : (
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2 rounded"
-            onClick={handlePrevPage}
-          >
-            Previous
-          </button>
-        )}
-        {`${currentPage} / ${totalPages}  `}
-        {!nextPage ? (
-          <button
-            className="bg-gray-400 text-white font-bold py-2 px-4 mr-2 rounded"
-            disabled
-          >
-            Next
-          </button>
-        ) : (
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={handleNextPage}
-          >
-            Next
-          </button>
-        )} */}
       </div>
     </main>
   );

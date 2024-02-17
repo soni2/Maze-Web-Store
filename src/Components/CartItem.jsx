@@ -1,10 +1,6 @@
 "use client";
 
-import { useQuery } from "@/Hooks/useQuery";
-
 export function CartItem({ thumbnail, title, price, id }) {
-  const {} = useQuery();
-
   return (
     <li className="text-black flex items-center py-1">
       <img src={thumbnail} className="h-16 w-16 object-cover rounded-md mr-4" />
