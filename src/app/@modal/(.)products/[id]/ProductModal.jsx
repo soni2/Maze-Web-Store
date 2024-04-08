@@ -61,12 +61,6 @@ export function ProductModal({
                     />
                   );
                 })}
-                {/* 
-                <StarIcon className="text-yellow-400 h-5 w-5" />
-                <StarIcon className="text-yellow-400 h-5 w-5" />
-                <StarIcon className="text-yellow-400 h-5 w-5" />
-                <StarIcon className="text-yellow-400 h-5 w-5" />
-                <StarIcon className="text-gray-300 h-5 w-5" /> */}
               </div>
               <p className="text-4xl font-bold text-gray-900 mt-4">${price}</p>
               <div className="border-t-2 border-gray-200 mt-3" />
