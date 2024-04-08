@@ -1,4 +1,5 @@
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
+import { createSearchParamsBailoutProxy } from "next/dist/client/components/searchparams-bailout-proxy";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
@@ -8,7 +9,8 @@ export async function GET(req) {
 
   if (code) {
     const supabase = createRouteHandlerClient({ cookies });
-    await supabase.auth.exchangeCodeForSession(code);
+    const { error } = await supabase.auth.exchangeCodeForSession(code)
+    console.log(error)
   }
 
   return NextResponse.redirect(requestURL.origin);

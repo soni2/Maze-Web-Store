@@ -3,12 +3,52 @@ import "./products.css";
 
 import { useQuery } from "@/Hooks/useQuery";
 import { useRouter } from "next/navigation";
-import { useCart } from "@/Hooks/useCart";
+import { useEffect, useState } from "react";
+import ProductItem from "./ProductItem";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
-export function ProductsList() {
+export function ProductsList({ session, addToCart }) {
   const router = useRouter();
 
-  const { loading, productsData, currentPage, queries, setQueries } =
+  const supabase = createClientComponentClient();
+  const [cart, setCart] = useState([]);
+
+  async function getCartData() {
+    const url = "http://localhost:3000/shoppingcart";
+
+    await fetch(url)
+      .then((res) => res.json())
+      .then((res) => {
+        setCart(res);
+      });
+  }
+
+  useEffect(() => {
+    getCartData();
+  }, []);
+
+  useEffect(() => {
+    const channel = supabase
+      .channel("realtime button change")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "cart",
+        },
+        () => {
+          getCartData();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [supabase, cart]);
+
+  const { loading, productsData, currentPage, queries, setQueries, fetchData } =
     useQuery();
   const { products, previousPage, totalPages, nextPage } = productsData;
 
@@ -43,40 +83,30 @@ export function ProductsList() {
     }));
   };
 
-  const { setCart } = useCart();
-  function addToCart(e) {
-    setCart((prevState) => [
-      ...prevState,
-      {
-        title: e.title,
-        thumbnail: e.thumbnail,
-        id: e.id,
-        price: e.price,
-        quantity: 1,
-      },
-    ]);
+  function productInCart(product) {
+    return cart.some((item) => item.prod_id === product);
   }
 
   return (
     <main className="flex flex-col items-center w-4/5">
-      <div className="products">
-        <ul className="grid grid-cols-4 gap-4">
-          {!loading ? (
-            products?.map((product) => (
-              <li key={product.id} className="flex flex-row justify-between">
-                <img src={product.thumbnail} alt={product.title} />
-                <strong>{product.title}</strong> - ${product.price}
-                <button
-                  className="bg-slate-700 py-2 rounded-md hover:bg-slate-900"
-                  onClick={() => addToCart(product)}
-                >
-                  Add To Cart
-                </button>
-              </li>
-            ))
-          ) : (
-            <h1>Loading</h1>
-          )}
+      <div className="products w-full h-full">
+        <ul className="grid grid-cols-4 gap-4 mb-6">
+          {!loading
+            ? products?.map((product) => {
+                const productIn = productInCart(product.id);
+
+                return (
+                  <ProductItem
+                    key={product.id}
+                    session={session}
+                    product={product}
+                    addToCart={addToCart}
+                    productIn={productIn}
+                    cart={cart}
+                  />
+                );
+              })
+            : [...Array(12)].map((e, i) => <Loading key={i} />)}
         </ul>
       </div>
       <div>
@@ -103,3 +133,26 @@ export function ProductsList() {
     </main>
   );
 }
+
+export const Loading = () => {
+  return (
+    <li className="px-4 py-5 w-full flex flex-col bg-white animate-pulse gap-1">
+      <div className="flex flex-col justify-between gap-2 min-w-full">
+        <div
+          className="w-full bg-gray-200 rounded-md"
+          style={{
+            aspectRatio: "10/12",
+            objectFit: "cover",
+          }}
+        ></div>
+      </div>
+      <div className="w-full h-4 bg-gray-200" />
+
+      <div className="grid grid-cols-4 " style={{}}>
+        <div className="h-4 bg-gray-200 col-span-2" />
+        <div className="w-10 h-10 bg-gray-200 rounded-lg row-span-2 col-start-4" />
+        <div className="h-4 bg-gray-200 col-span-2" />
+      </div>
+    </li>
+  );
+};

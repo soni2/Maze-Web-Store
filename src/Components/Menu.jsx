@@ -41,7 +41,7 @@ export default function Menu() {
   };
 
   return (
-    <aside className="bg-gray-200 p-4 w-1/5 text-gray-900">
+    <aside className="bg-white p-4 w-1/5 text-gray-900 dark:bg-slate-900 dark:text-white duration-500">
       <div className="mb-4">
         <h2 className="text-lg font-bold mb-2">Menu</h2>
         <ul>

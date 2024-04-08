@@ -1,4 +1,4 @@
-import { products as initialProducts } from "@/Mocks/Products.json";
+import { products } from "@/Mocks/Products.json";
 
 export async function GET(req) {
   const url = new URL(req.url);
@@ -8,16 +8,21 @@ export async function GET(req) {
   let modelCategory = url.searchParams.get("category") || "all";
   const searchQuery = url.searchParams.get("search");
 
+  const productId = url.searchParams.get("productId");
+
+  if (productId)
+    return Response.json(
+      products.filter((item) => item.id === JSON.parse(productId))
+    );
+
   if (modelCategory === undefined) {
     modelCategory = "all";
   }
 
-  const modelCategoryList = [
-    ...new Set(initialProducts.map((item) => item.category)),
-  ];
+  const modelCategoryList = [...new Set(products.map((item) => item.category))];
 
-  const searchProducts = (products) => {
-    return products.filter(
+  const searchProducts = (i) => {
+    return i.filter(
       (item) =>
         item.description.toLowerCase().includes(searchQuery) ||
         item.category.toLowerCase().includes(searchQuery) ||
@@ -43,36 +48,36 @@ export async function GET(req) {
     );
   };
 
-  const totalPage = Math.ceil(filterProduct(initialProducts).length / limit);
+  const totalPage = Math.ceil(filterProduct(products).length / limit);
 
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
 
-  const products = {};
+  const initialProducts = {};
 
-  products.search = searchQuery;
+  initialProducts.search = searchQuery;
 
-  products.totalPages = totalPage;
+  initialProducts.totalPages = totalPage;
 
   if (startIndex > 0) {
-    products.previousPage = {
+    initialProducts.previousPage = {
       page: page - 1,
       limit: limit,
     };
   }
 
-  if (endIndex < filterProduct(initialProducts).length) {
-    products.nextPage = {
+  if (endIndex < filterProduct(products).length) {
+    initialProducts.nextPage = {
       page: page + 1,
       limit: limit,
     };
   }
 
-  products.category = modelCategoryList;
-  products.products = filterProduct(initialProducts).slice(
+  initialProducts.category = modelCategoryList;
+  initialProducts.products = filterProduct(products).slice(
     startIndex,
     endIndex
   );
 
-  return Response.json({ products });
+  return Response.json({ products: initialProducts });
 }

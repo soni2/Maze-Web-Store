@@ -10,24 +10,31 @@ export const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await supabase.auth.signInWithOtp({
+    const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
         redirectTo: "http://localhost:3000/auth/callback",
       },
     });
+
+    console.log(error);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <input
         type="email"
         name="email"
         placeholder="username@site.com"
         onChange={(e) => setEmail(e.target.value)}
-        className="text-black"
+        className="text-black px-3 py-2"
       />
-      <button type="submit">Log in</button>
+      <button
+        type="submit"
+        className="w-full bg-black p-4 rounded-md hover:bg-gray-500"
+      >
+        Log in
+      </button>
     </form>
   );
 };

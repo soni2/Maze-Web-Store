@@ -21,6 +21,7 @@ export const RouterProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [productsData, setProductsData] = useState([]);
   const [cartOpen, setCartOpen] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
 
   const [queries, setQueries] = useState({
     page: page || "1",
@@ -34,27 +35,31 @@ export const RouterProvider = ({ children }) => {
     setCartOpen(!cartOpen);
   };
 
+  const handleLoginToggle = () => {
+    setLoginOpen(!loginOpen);
+  };
+
   // Manejo del buscador
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const url = `http://localhost:3000/items?page=${queries.page}&limit=${
-          queries.limit
-        }&minPrice=${queries.minPrice}&category=${
-          queries.category === undefined ? "all" : queries.category
-        }&search=${queries.search}`;
+  async function fetchData() {
+    try {
+      const url = `http://localhost:3000/items?page=${queries.page}&limit=${
+        queries.limit
+      }&minPrice=${queries.minPrice}&category=${
+        queries.category === undefined ? "all" : queries.category
+      }&search=${queries.search}`;
 
-        const res = await fetch(url);
-        const data = await res.json();
+      const res = await fetch(url);
+      const data = await res.json();
 
-        setProductsData(data.products);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setLoading(false);
-      }
+      setProductsData(data.products);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
     }
+  }
+  useEffect(() => {
     fetchData();
   }, [queries, search]);
 
@@ -73,6 +78,10 @@ export const RouterProvider = ({ children }) => {
         cartOpen,
         setCartOpen,
         handleCartToggle,
+        handleLoginToggle,
+        loginOpen,
+        setLoginOpen,
+        fetchData,
       }}
     >
       {children}

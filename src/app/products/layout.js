@@ -1,16 +1,30 @@
-import { Cart } from "@/Components/Cart";
-import { Footer } from "@/Components/Footer";
+import { FlyoutCart } from "@/Components/FlyoutCart";
 import Header from "@/Components/Header";
 import "@/app/globals.css";
+import { delFromCart, getSession, updateCart } from "@/lib";
 
-export default function Layout({ children }) {
+export default async function Layout({ children }) {
+  const session = await getSession();
+
+  async function delItem(e) {
+    "use server";
+    await delFromCart(e);
+  }
+
+  async function updateItem({ id, quantity }) {
+    "use server";
+    await updateCart({ id, quantity });
+  }
+
   return (
-    <div className="flex justify-center h-screen">
-      <div className="min-w-80 w-[1024px]">
-        {/* <Header /> */}
-        {children}
-        <Footer />
+    <>
+      <Header session={session} />
+      <div className="flex justify-center ">
+        <div className="min-w-80 max-w-[1024px] pb-8">
+          {children}
+          <FlyoutCart delItem={delItem} updateItem={updateItem} />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
