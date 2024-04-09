@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
 export async function getSession() {
+  cookies().getAll();
   const supabase = createServerComponentClient({ cookies });
   const {
     data: { session },
@@ -15,6 +16,7 @@ export async function getSession() {
 }
 
 export async function delFromCart(id) {
+  cookies().getAll();
   const supabase = createServerComponentClient({ cookies });
   const { error } = await supabase.from("cart").delete().eq("id", id);
 
@@ -24,6 +26,7 @@ export async function delFromCart(id) {
 }
 
 export async function updateCart({ id, quantity }) {
+  cookies().getAll();
   const supabase = createServerComponentClient({ cookies });
   const { error } = await supabase
     .from("cart")

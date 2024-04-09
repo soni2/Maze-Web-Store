@@ -24,7 +24,7 @@ export function ProductModal({
             aspectRatio: "10/12",
           }}
         >
-          <img
+          <Image
             className="max-h-full"
             alt="Smartwatch"
             height="200"
@@ -89,7 +89,7 @@ export function ProductModal({
           </div>
           <div className="flex justify-center mt-4">
             {images?.map((image, index) => (
-              <img
+              <Image
                 alt="Smartwatch thumbnail"
                 className="h-12 w-12 rounded-full border-2 border-blue-500 mx-1"
                 height="50"

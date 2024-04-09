@@ -36,7 +36,7 @@ export default async function Products() {
 
   const addToCart = async (e) => {
     "use server";
-
+    cookies().getAll();
     const supabase = createServerActionClient({ cookies });
 
     try {
