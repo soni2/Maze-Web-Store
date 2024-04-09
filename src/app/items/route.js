@@ -1,6 +1,14 @@
 import { products } from "@/Mocks/Products.json";
 
 export async function GET(req) {
+  const data = await fetch("https://dummyjson.com/products/").then((res) =>
+    res.json()
+  );
+
+  const { products } = data;
+
+  // return Response.json({ products: products });
+
   const url = new URL(req.url);
   const page = parseInt(url.searchParams.get("page")) || "1";
   const limit = parseInt(url.searchParams.get("limit")) || "12";
