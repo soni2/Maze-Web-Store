@@ -16,29 +16,34 @@ export function ProductModal({
 
   const router = useRouter();
   return (
-    <div className="relative p-0 border w-11/12 md:w-2/3 lg:w-2/3 shadow-lg rounded-md bg-white max-w-screen-lg min-h-[480px] border-0 overflow-hidden">
-      <div className="mt-3 grid grid-flow-col !m-0">
-        <div
-          className="max-h-[450px] h-full"
-          style={{
-            aspectRatio: "10/12",
-          }}
-        >
-          <Image
-            className="max-h-full"
+    <div className="relative p-0 w-11/12 md:w-2/3 lg:w-2/3 shadow-lg rounded-md bg-white max-w-screen-lg min-h-[450px] border-0 overflow-hidden">
+      <div className="mt-3 grid grid-cols-4 grid-flow-col !m-0 items-center justify-center">
+        <div className="max-h-[450px] col-span-2 flex items-center justify-center relative overflow-hidden">
+          <img
+            className="h-full absolute z-50"
             alt="Smartwatch"
-            height="200"
             src={thumb}
-            style={{ objectFit: "cover" }}
+            style={{ objectFit: "contain" }}
           />
+          <div>
+            <img
+              className="min-h-full min-w-full block blur-lg"
+              alt="Smartwatch"
+              src={thumb}
+              style={{
+                objectFit: "cover",
+                aspectRatio: "8/12",
+              }}
+            />
+          </div>
         </div>
-        <div className="mt-2 px-7 py-3">
-          <div className="flex justify-between items-center">
+        <div className="mt-2 px-7 py-3 col-span-2 flex flex-col justify-between min-h-full">
+          <div className="flex min-w-full justify-end">
             <button
-              className="text-sm text-black"
+              className="text-sm font-bold text-black "
               onClick={() => router.back()}
             >
-              Close
+              X
             </button>
           </div>
           <div className="flex">
@@ -46,7 +51,7 @@ export function ProductModal({
               <h3 className="text-lg leading-6 font-medium text-gray-900">
                 {title}
               </h3>
-              <div className="flex items-center">
+              <div className="flex">
                 {[...Array(5)].map((star, index) => {
                   const currentRating = index + 1;
 
@@ -89,16 +94,14 @@ export function ProductModal({
           </div>
           <div className="flex justify-center mt-4">
             {images?.map((image, index) => (
-              <Image
+              <img
                 alt="Smartwatch thumbnail"
                 className="h-12 w-12 rounded-full border-2 border-blue-500 mx-1"
-                height="50"
                 src={image}
                 style={{
                   aspectRatio: "50/50",
                   objectFit: "cover",
                 }}
-                width="50"
                 key={index}
                 onMouseEnter={() => setThumb(image)}
               />

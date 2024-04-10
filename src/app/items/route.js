@@ -1,11 +1,11 @@
 import { products } from "@/Mocks/Products.json";
 
 export async function GET(req) {
-  const data = await fetch("https://dummyjson.com/products/").then((res) =>
-    res.json()
-  );
+  // const data = await fetch(products).then((res) =>
+  //   res.json()
+  // );
 
-  const { products } = data;
+  // const { products } = data;
 
   // return Response.json({ products: products });
 

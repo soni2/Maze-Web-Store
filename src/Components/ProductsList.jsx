@@ -136,22 +136,22 @@ export function ProductsList({ session, addToCart }) {
 
 export const Loading = () => {
   return (
-    <li className="px-4 py-5 w-full flex flex-col bg-white animate-pulse gap-1">
+    <li className="px-4 py-5 w-full flex flex-col bg-white gap-1 dark:bg-slate-900">
       <div className="flex flex-col justify-between gap-2 min-w-full">
         <div
-          className="w-full bg-gray-200 rounded-md"
+          className="w-full bg-gray-200 rounded-md dark:bg-slate-800"
           style={{
             aspectRatio: "10/12",
             objectFit: "cover",
           }}
         ></div>
       </div>
-      <div className="w-full h-4 bg-gray-200" />
+      <div className="w-full h-4 bg-gray-200 dark:bg-slate-800" />
 
       <div className="grid grid-cols-4 " style={{}}>
-        <div className="h-4 bg-gray-200 col-span-2" />
-        <div className="w-10 h-10 bg-gray-200 rounded-lg row-span-2 col-start-4" />
-        <div className="h-4 bg-gray-200 col-span-2" />
+        <div className="h-4 bg-gray-200 col-span-2 dark:bg-slate-800" />
+        <div className="w-10 h-10 bg-gray-200 rounded-lg row-span-2 col-start-4 dark:bg-slate-800" />
+        <div className="h-4 bg-gray-200 col-span-2 dark:bg-slate-800" />
       </div>
     </li>
   );

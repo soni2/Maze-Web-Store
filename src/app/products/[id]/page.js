@@ -1,5 +1,4 @@
 import { ProductPage } from "./ProductPage";
-import { Metadata } from "next";
 
 export async function generateMetadata({ params }) {
   const url = `http://localhost:3000/items?productId=${params.id}`;
