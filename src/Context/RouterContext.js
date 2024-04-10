@@ -43,7 +43,7 @@ export const RouterProvider = ({ children }) => {
 
   async function fetchData() {
     try {
-      const url = `http://localhost:3000/items?page=${queries.page}&limit=${
+      const url = `/items?page=${queries.page}&limit=${
         queries.limit
       }&minPrice=${queries.minPrice}&category=${
         queries.category === undefined ? "all" : queries.category

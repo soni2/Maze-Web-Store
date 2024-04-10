@@ -1,7 +1,7 @@
 import { ProductPage } from "./ProductPage";
 
 export async function generateMetadata({ params }) {
-  const url = `http://localhost:3000/items?productId=${params.id}`;
+  const url = `/items?productId=${params.id}`;
 
   const res = await fetch(url);
   const data = await res.json();
@@ -12,7 +12,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function Product({ params }) {
-  const url = `http://localhost:3000/items?productId=${params.id}`;
+  const url = `/items?productId=${params.id}`;
 
   const res = await fetch(url);
   const data = await res.json();
