@@ -2,7 +2,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { RouterProvider } from "@/Context/RouterContext";
 import { CartProvider } from "@/Context/CartContext";
-import { FlyoutCart } from "@/Components/FlyoutCart";
 import { Footer } from "@/Components/Footer";
 import { Providers } from "@/Context/ThemeContext";
 

@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import Slide1 from "./Hero/slide1";
 import Slide2 from "./Hero/slide2";

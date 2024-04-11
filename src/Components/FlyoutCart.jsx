@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react";
 import { CartItem } from "./CartItem";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useRouter } from "next/navigation";
 import { useQuery } from "@/Hooks/useQuery";
 
 export function FlyoutCart({ delItem, updateItem }) {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState([]);
 
@@ -15,7 +16,7 @@ export function FlyoutCart({ delItem, updateItem }) {
   const supabase = createClientComponentClient();
 
   const getCartData = async () => {
-    fetch(`http://localhost:3000/shoppingcart`)
+    fetch(`${baseUrl}/shoppingcart`)
       .then((res) => res.json())
       .then((res) => {
         return setCart(res);
