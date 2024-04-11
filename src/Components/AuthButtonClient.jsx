@@ -15,7 +15,7 @@ export function AuthButtonClient({ session }) {
     await supabase.auth.signInWithOAuth({
       provider: platform,
       options: {
-        redirectTo: "http://localhost:3000/auth/callback",
+        redirectTo: "/auth/callback",
       },
     });
   };
