@@ -39,7 +39,7 @@ export default function ProductItem({
         setHover(false);
       }}
     >
-      <Link href={`/products/${product.id}`}>
+      <Link href={`/products/${product.id}`} passHref>
         <img
           className={`${hover && "scale-[1.02]"} duration-500`}
           src={product.thumbnail}
@@ -51,7 +51,7 @@ export default function ProductItem({
         />
       </Link>
 
-      <Link href={`/products/${product.id}`} scroll={false}>
+      <Link href={`/products/${product.id}`} scroll={false} passHref>
         <div className="overflow-hidden text-ellipsis text-nowrap">
           <strong>{product.title}</strong>
         </div>
