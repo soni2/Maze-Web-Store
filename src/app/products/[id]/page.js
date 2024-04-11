@@ -1,21 +1,23 @@
 import { ProductPage } from "./ProductPage";
 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
 export async function generateMetadata({ params }) {
-  const url = `/items?productId=${params.id}`;
+  const url = `${baseUrl}/items/${params.id}`;
 
   const res = await fetch(url);
-  const data = await res.json();
+  const { product: data } = await res.json();
 
   return {
-    title: `${data[0].title} | Maze`,
+    title: `${data.title} | Maze`,
   };
 }
 
 export default async function Product({ params }) {
-  const url = `/items?productId=${params.id}`;
+  const url = `${baseUrl}/items/${params.id}`;
 
   const res = await fetch(url);
-  const data = await res.json();
+  const { product } = await res.json();
 
-  return data && <ProductPage {...data[0]} />;
+  return product && <ProductPage {...product} />;
 }

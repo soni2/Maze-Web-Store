@@ -2,15 +2,17 @@ import { Modal } from "@/Components/Modal";
 import { ProductModal } from "./ProductModal";
 
 export default async function Product({ params }) {
-  const url = `/items?productId=${params.id}`;
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const id = params.id;
+  const url = `${baseUrl}/items/${id}`;
 
   const res = await fetch(url);
-  const data = await res.json();
+  const { product } = await res.json();
 
   return (
-    data && (
+    product && (
       <Modal>
-        <ProductModal {...data[0]} />
+        <ProductModal {...product} />
       </Modal>
     )
   );
