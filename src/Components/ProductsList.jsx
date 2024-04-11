@@ -8,13 +8,15 @@ import ProductItem from "./ProductItem";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 export function ProductsList({ session, addToCart }) {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
   const router = useRouter();
 
   const supabase = createClientComponentClient();
   const [cart, setCart] = useState([]);
 
   async function getCartData() {
-    const url = "http://localhost:3000/shoppingcart";
+    const url = `${baseUrl}/shoppingcart`;
 
     await fetch(url)
       .then((res) => res.json())

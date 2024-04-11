@@ -4,6 +4,8 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useState } from "react";
 
 export const LoginForm = () => {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
   const [email, setEmail] = useState("");
   const supabase = createClientComponentClient();
 
@@ -13,7 +15,7 @@ export const LoginForm = () => {
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        redirectTo: "http://localhost:3000/auth/callback",
+        redirectTo: `${baseUrl}/auth/callback`,
       },
     });
 
