@@ -3,6 +3,8 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 
 export function AuthButtonClient({ session }) {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
   const supabase = createClientComponentClient();
   const router = useRouter();
 
@@ -15,7 +17,7 @@ export function AuthButtonClient({ session }) {
     await supabase.auth.signInWithOAuth({
       provider: platform,
       options: {
-        redirectTo: "/auth/callback",
+        redirectTo: `${baseUrl}/auth/callback`,
       },
     });
   };
