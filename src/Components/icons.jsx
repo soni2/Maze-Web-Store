@@ -58,7 +58,7 @@ export const MoonIcon = ({ width = 24, height = 24 }) => {
 export const SunIcon = ({ width = 24, height = 24 }) => {
   return (
     <svg
-      class="svg-icon"
+      className="svg-icon"
       style={{
         verticalAlign: "middle",
         overflow: "hidden",

@@ -6,49 +6,15 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import ProductItem from "./ProductItem";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useCart } from "@/Hooks/useCart";
 
 export function ProductsList({ session, addToCart }) {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const { baseUrl } = useCart();
 
   const router = useRouter();
 
   const supabase = createClientComponentClient();
-  const [cart, setCart] = useState([]);
-
-  async function getCartData() {
-    const url = `${baseUrl}/shoppingcart`;
-
-    await fetch(url)
-      .then((res) => res.json())
-      .then((res) => {
-        setCart(res);
-      });
-  }
-
-  useEffect(() => {
-    getCartData();
-  }, []);
-
-  useEffect(() => {
-    const channel = supabase
-      .channel("realtime button change")
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "cart",
-        },
-        () => {
-          getCartData();
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [supabase, cart]);
+  const { productInCart, cart } = useCart();
 
   const { loading, productsData, currentPage, queries, setQueries, fetchData } =
     useQuery();
@@ -84,10 +50,6 @@ export function ProductsList({ session, addToCart }) {
       page: page - 1,
     }));
   };
-
-  function productInCart(product) {
-    return cart.some((item) => item.prod_id === product);
-  }
 
   return (
     <main className="flex flex-col items-center w-4/5">

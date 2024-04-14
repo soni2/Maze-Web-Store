@@ -18,24 +18,27 @@ export function ProductModal({
   return (
     <div className="relative p-0 w-11/12 md:w-2/3 lg:w-2/3 shadow-lg rounded-md bg-white max-w-screen-lg min-h-[450px] border-0 overflow-hidden">
       <div className="mt-3 grid grid-cols-4 grid-flow-col !m-0 items-center justify-center">
-        <div className="max-h-[450px] col-span-2 flex items-center justify-center relative overflow-hidden">
-          <img
+        <div className="min-h-[450px] col-span-2 relative overflow-hidden flex items-center justify-center">
+          {/* <img
             className="h-full absolute z-50"
             alt="Smartwatch"
             src={thumb}
             style={{ objectFit: "contain" }}
-          />
-          <div>
-            <img
-              className="min-h-full min-w-full block blur-lg"
-              alt="Smartwatch"
-              src={thumb}
-              style={{
-                objectFit: "cover",
-                aspectRatio: "8/12",
-              }}
-            />
-          </div>
+          /> */}
+          <div
+            className={`z-50 min-h-full min-w-full block absolute inset-0 bg-contain bg-no-repeat bg-center`}
+            alt={title}
+            style={{
+              backgroundImage: `url("${thumb}")`,
+            }}
+          ></div>
+          <div
+            className="block blur-lg absolute inset-0 bg-cover bg-no-repeat bg-center"
+            alt={title}
+            style={{
+              backgroundImage: `url("${thumb}")`,
+            }}
+          ></div>
         </div>
         <div className="mt-2 px-7 py-3 col-span-2 flex flex-col justify-between min-h-full">
           <div className="flex min-w-full justify-end">

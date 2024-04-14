@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { CartIcon } from "./icons";
+import { useCart } from "@/Hooks/useCart";
 
 export default function ProductItem({
   product,

@@ -1,8 +1,35 @@
 import { Carousel } from "./Carousel";
 import { products } from "@/Mocks/products.js";
 import { getSession } from "@/lib";
+import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
 
 export default async function Featured() {
+  const addToCart = async (e) => {
+    "use server";
+    cookies().getAll();
+    const supabase = createServerActionClient({ cookies });
+
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      const { error } = await supabase.from("cart").insert({
+        title: e.title,
+        price: e.price,
+        prod_id: e.id,
+        thumbnail: e.thumbnail,
+        user_id: user.id,
+        quantity: 1,
+        loading: false,
+      });
+      if (error) console.log(error);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const session = await getSession();
 
   const getRandomArray = (e, n) => {
@@ -26,7 +53,11 @@ export default async function Featured() {
       </div>
 
       {initialProducts ? (
-        <Carousel products={initialProducts} session={session} />
+        <Carousel
+          products={initialProducts}
+          session={session}
+          addToCart={addToCart}
+        />
       ) : (
         <h1>Loading</h1>
       )}
