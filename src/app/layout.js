@@ -2,7 +2,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { RouterProvider } from "@/Context/RouterContext";
 import { CartProvider } from "@/Context/CartContext";
-import { Footer } from "@/Components/Footer";
 import { Providers } from "@/Context/ThemeContext";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -20,13 +19,12 @@ export default function RootLayout({ children, modal }) {
       <body
         className={`bg-witheLight dark:bg-blackDark ${inter.className} duration-500`}
       >
-        <div className=" min-h-screen">
+        <div className="flex flex-col  min-h-screen">
           <RouterProvider>
             <CartProvider>
               <Providers>
                 {children}
                 {modal}
-                <Footer />
               </Providers>
             </CartProvider>
           </RouterProvider>

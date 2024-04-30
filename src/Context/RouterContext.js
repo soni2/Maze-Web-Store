@@ -8,8 +8,6 @@ export const RouterContext = createContext();
 export const RouterProvider = ({ children }) => {
   const params = useSearchParams();
 
-  // const path = usePathname();
-
   const page = params.get("page");
   const limit = params.get("limit");
   const minPrice = params.get("minPrice");
@@ -25,7 +23,7 @@ export const RouterProvider = ({ children }) => {
 
   const [queries, setQueries] = useState({
     page: page || "1",
-    limit: limit || "12",
+    limit: limit || "16",
     minPrice: minPrice || "0",
     category: category || "all",
     search: search || "",
@@ -43,7 +41,7 @@ export const RouterProvider = ({ children }) => {
 
   async function fetchData() {
     try {
-      const url = `/items?page=${queries.page}&limit=${
+      const url = `/api/items?page=${queries.page}&limit=${
         queries.limit
       }&minPrice=${queries.minPrice}&category=${
         queries.category === undefined ? "all" : queries.category

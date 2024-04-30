@@ -1,47 +1,82 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import ReviewModal from "./ReviewModal";
+import { useCart } from "@/Hooks/useCart";
+import StarIcon from "@mui/icons-material/Star";
+import Button from "@/Components/ui/Button";
 
 export function ProductPage({
+  id,
   title,
   thumbnail,
   images,
   description,
   price,
   rating,
-  stocks,
+  addReview,
+  route,
 }) {
   const [thumb, setThumb] = useState(thumbnail);
-  return (
-    <div className="bg-white pb-4 dark:bg-slate-900 dark:text-white">
-      <div className="grid md:grid-cols-2 gap-6 xl:gap-12 items-start max-w-6xl px-4 mx-auto py-6 ">
-        <div className="grid gap-4 md:gap-10 items-start order-2 md:order-1">
-          <div className="hidden md:flex items-start">
-            <div className="grid gap-4">
-              <h1 className="font-bold text-3xl">{title}</h1>
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-0.5">
-                  {[...Array(5)].map((star, index) => {
-                    const currentRating = index + 1;
+  const [modalOpen, setModalOpen] = useState(false);
+  const [ratings, setRating] = useState([]);
+  const [avg, setAvg] = useState([]);
 
-                    return (
-                      <StarIcon
-                        key={index}
-                        className={`${
-                          currentRating <= rating
-                            ? "text-yellow-400"
-                            : "text-gray-300"
-                        } h-5 w-5`}
-                      />
-                    );
-                  })}
+  const { baseUrl } = useCart();
+
+  useEffect(() => {
+    const url = `${baseUrl}/api/ratings/${route}`;
+
+    const fetchReview = async () => {
+      await fetch(url)
+        .then((res) => res.json())
+        .then((res) => {
+          setRating(res.data);
+          setAvg(res.avg);
+        });
+    };
+
+    fetchReview();
+  }, []);
+
+  return (
+    <div className="bg-white pb-4 dark:bg-blackDark  dark:text-white max-w-[1200px]">
+      <div className="grid grid-cols-2 gap-6 xl:gap-12 items-start max-w-6xl px-4 mx-auto py-6 ">
+        <div className="grid gap-4 md:gap-10 items-start order-2 md:order-1 w-full h-full">
+          <div className="hidden md:flex items-start h-full w-full">
+            <div className="grid gap-4 content-between h-full w-full">
+              <div className="flex flex-col gap-4">
+                <h1 className="font-bold text-3xl capitalize">{title}</h1>
+                <div className="flex items-center gap-5">
+                  <div className="flex items-center gap-0.5">
+                    {[...Array(5)].map((star, index) => {
+                      const currentRating = index + 1;
+
+                      return (
+                        <StarIcon
+                          key={index}
+                          className={`${
+                            currentRating <= avg
+                              ? "text-yellow-400"
+                              : "text-gray-300"
+                          } h-5 w-5`}
+                        />
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className="flex flex-col gap-4">
+                  <p>{description}</p>
+                  <div className=" font-medium flex flex-row">
+                    <span>us$</span>
+                    <span className="text-4xl">{price}</span>
+                    <span>00</span>
+                  </div>
                 </div>
               </div>
-              <div>
-                <p>{description}</p>
-              </div>
+
+              <Button title="Add to cart">Add To Cart</Button>
             </div>
-            <div className="text-4xl font-bold ml-auto">${price}</div>
           </div>
           {/* <form className="grid gap-4 md:gap-10">
           <div className="grid gap-2">
@@ -181,15 +216,28 @@ export function ProductPage({
             <div className="grid gap-4">
               <h1 className="font-bold text-2xl sm:text-3xl">{title}</h1>
               <div>
-                <p>60% combed ringspun cotton/40% polyester jersey tee.</p>
+                <p>{description}</p>
               </div>
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-0.5">
-                  <StarIcon className="w-5 h-5 fill-primary" />
-                  <StarIcon className="w-5 h-5 fill-primary" />
+                  {[...Array(5)].map((star, index) => {
+                    const currentRating = index + 1;
+
+                    return (
+                      <StarIcon
+                        key={index}
+                        className={`${
+                          currentRating <= avg
+                            ? "text-yellow-400"
+                            : "text-gray-300"
+                        } h-5 w-5`}
+                      />
+                    );
+                  })}
+                  {/* <StarIcon className="w-5 h-5 fill-primary" />
                   <StarIcon className="w-5 h-5 fill-primary" />
                   <StarIcon className="w-5 h-5 fill-muted stroke-muted-foreground" />
-                  <StarIcon className="w-5 h-5 fill-muted stroke-muted-foreground" />
+                  <StarIcon className="w-5 h-5 fill-muted stroke-muted-foreground" /> */}
                 </div>
               </div>
             </div>
@@ -199,53 +247,54 @@ export function ProductPage({
       </div>
       <div className="grid gap-6 md:gap-12 max-w-6xl px-4 mx-auto">
         <div className="grid gap-4">
-          <div className="flex items-center gap-4">
+          <div className="flex gap-4">
             <h2 className="text-2xl font-bold">Customer Reviews</h2>
-            {/* <Button size="sm" variant="outline">
-            Write a Review
-          </Button> */}
+            <button
+              onClick={() => setModalOpen(true)}
+              className="bg-primary px-4 py-3 rounded-md font-bold "
+            >
+              Write a Review
+            </button>
           </div>
 
           {/* Ratings */}
           <div className="grid gap-4">
-            <div className="grid gap-2">
-              <h3 className="text-lg font-semibold">Great fit and style</h3>
-              <div className="flex items-center gap-2">
-                <div className="flex items-center gap-0.5">
-                  <StarIcon className="w-4 h-4 fill-primary" />
-                  <StarIcon className="w-4 h-4 fill-primary" />
-                  <StarIcon className="w-4 h-4 fill-primary" />
-                  <StarIcon className="w-4 h-4 fill-muted stroke-muted-foreground" />
-                  <StarIcon className="w-4 h-4 fill-muted stroke-muted-foreground" />
-                </div>
-                <span className="text-muted">3 days ago</span>
-              </div>
-              <p>
-                The Acme Prism T-Shirt is a fantastic addition to my wardrobe.
-                The fabric is incredibly soft and comfortable, and the fit is
-                just perfect. I love the attention to detail in the design, and
-                the shirt adds a pop of style to any outfit. Highly recommended!
-              </p>
-            </div>
-            <div className="grid gap-2 border-t pt-4">
-              <h3 className="text-lg font-semibold">Love the design</h3>
-              <div className="flex items-center gap-2">
-                <div className="flex items-center gap-0.5">
-                  <StarIcon className="w-4 h-4 fill-primary" />
-                  <StarIcon className="w-4 h-4 fill-primary" />
-                  <StarIcon className="w-4 h-4 fill-primary" />
-                  <StarIcon className="w-4 h-4 fill-muted stroke-muted-foreground" />
-                  <StarIcon className="w-4 h-4 fill-muted stroke-muted-foreground" />
-                </div>
-                <span className="text-muted">1 week ago</span>
-              </div>
-              <p>
-                The Acme Prism T-Shirt is a fantastic addition to my wardrobe.
-                The fabric is incredibly soft and comfortable, and the fit is
-                just perfect. I love the attention to detail in the design, and
-                the shirt adds a pop of style to any outfit. Highly recommended!
-              </p>
-            </div>
+            {ratings.length === 0 ? (
+              <h1>Nothing to see Here</h1>
+            ) : (
+              ratings?.map((e, i) => {
+                const date = new Date(e.created_at);
+
+                const month = date.getMonth();
+                const day = date.getDay();
+                const year = date.getFullYear();
+
+                return (
+                  <div key={i} className="grid gap-2 border-t pt-4">
+                    <h3 className="text-lg font-semibold">{e.header}</h3>
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-0.5">
+                        {[...Array(5)].map((star, index) => {
+                          const currentRating = index + 1;
+                          return (
+                            <StarIcon
+                              key={index}
+                              className={`${
+                                currentRating <= e.rating
+                                  ? "text-yellow-400"
+                                  : "text-gray-300"
+                              } h-5 w-5`}
+                            />
+                          );
+                        })}
+                      </div>
+                      <span className="text-muted">{`${month} / ${day} / ${year}`}</span>
+                    </div>
+                    <p>{e.content}</p>
+                  </div>
+                );
+              })
+            )}
           </div>
         </div>
         {/* <div className="grid gap-4">
@@ -343,26 +392,15 @@ export function ProductPage({
           </Card>
         </div>
       </div> */}
+        <ReviewModal
+          title={title}
+          thumbnail={thumbnail}
+          modalOpen={modalOpen}
+          setModalOpen={setModalOpen}
+          addReview={addReview}
+          id={id}
+        />
       </div>
     </div>
-  );
-}
-
-function StarIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-    </svg>
   );
 }

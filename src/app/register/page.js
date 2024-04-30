@@ -57,5 +57,9 @@ export default function Register() {
   //   </Button>
   //     </form>
   //   );
-  return <Form />;
+  return (
+    <div className="min-h-screen flex justify-center items-center">
+      <Form />
+    </div>
+  );
 }

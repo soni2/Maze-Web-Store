@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
-import { MoonIcon, SunIcon } from "./icons";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
 import Image from "next/image";
 
 export default function ThemeSwitch() {
@@ -28,10 +29,10 @@ export default function ThemeSwitch() {
   if (resolvedTheme === "dark") {
     return (
       <button
-        className="flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-full"
+        className="flex items-center hover:text-keppel-200 text-white duration-500"
         onClick={() => setTheme("light")}
       >
-        <SunIcon />
+        <LightModeIcon />
       </button>
     );
   }
@@ -39,10 +40,10 @@ export default function ThemeSwitch() {
   if (resolvedTheme === "light") {
     return (
       <button
-        className="flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-full"
+        className="flex items-center hover:text-primary text-black duration-500"
         onClick={() => setTheme("dark")}
       >
-        <MoonIcon fill="000" />
+        <DarkModeIcon fill="000" />
       </button>
     );
   }

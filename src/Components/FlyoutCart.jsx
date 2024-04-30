@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { CartItem } from "./CartItem";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useQuery } from "@/Hooks/useQuery";
+import CloseIcon from "@mui/icons-material/Close";
 
 export function FlyoutCart({ delItem, updateItem }) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
@@ -16,7 +17,7 @@ export function FlyoutCart({ delItem, updateItem }) {
   const supabase = createClientComponentClient();
 
   const getCartData = async () => {
-    fetch(`${baseUrl}/shoppingcart`)
+    fetch(`${baseUrl}/api/shoppingcart`)
       .then((res) => res.json())
       .then((res) => {
         return setCart(res);
@@ -24,6 +25,10 @@ export function FlyoutCart({ delItem, updateItem }) {
   };
 
   function getTotal() {
+    if (cart.length === 0) {
+      return setTotal(0);
+    }
+
     const total = cart.reduce(
       (acc, element) => acc + element.price * element.quantity,
       0
@@ -61,9 +66,6 @@ export function FlyoutCart({ delItem, updateItem }) {
   }, [cart]);
 
   return (
-    // <div
-    //   className={`fixed inset-0 z-10 overflow-hidden backdrop-blur-sm block `}
-    // >
     <div
       className={`fixed inset-0 z-10 overflow-hidden backdrop-blur-sm ${
         cartOpen ? "block" : "hidden"
@@ -84,14 +86,14 @@ export function FlyoutCart({ delItem, updateItem }) {
                 className="text-md text-gray-600 font-light tracking-wider cursor-pointer"
                 onClick={handleCartToggle}
               >
-                X
+                <CloseIcon />
               </h2>
             </div>
             <div className="overflow-auto row-span-9 relative">
               <ul>
                 {cart?.map((item) => (
                   <CartItem
-                    key={item.key}
+                    key={item.id}
                     item={item}
                     updateItem={updateItem}
                     getCartData={getCartData}

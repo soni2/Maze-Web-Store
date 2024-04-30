@@ -15,16 +15,24 @@ export default async function Featured() {
         data: { user },
       } = await supabase.auth.getUser();
 
-      const { error } = await supabase.from("cart").insert({
-        title: e.title,
-        price: e.price,
-        prod_id: e.id,
-        thumbnail: e.thumbnail,
-        user_id: user.id,
-        quantity: 1,
-        loading: false,
-      });
-      if (error) console.log(error);
+      const { data } = await supabase
+        .from("cart")
+        .select("*")
+        .eq("prod_id", e.id);
+
+      if (data[0]) {
+        console.log("item already exists in the cart");
+      } else {
+        const { error } = await supabase.from("cart").insert({
+          title: e.title,
+          price: e.price,
+          prod_id: e.id,
+          thumbnail: e.thumbnail,
+          user_id: user.id,
+          quantity: 1,
+        });
+        if (error) console.log(error);
+      }
     } catch (error) {
       console.error(error);
     }

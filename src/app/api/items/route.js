@@ -1,33 +1,32 @@
 import { products } from "@/Mocks/Products.json";
 
 export async function GET(req) {
-  // const data = await fetch(products).then((res) =>
-  //   res.json()
+  // const data = await fetch(`${process.env.NEXT_PUBLIC_API}?limit=100`).then(
+  //   (res) => res.json()
   // );
 
   // const { products } = data;
 
-  // return Response.json({ products: products });
-
   const url = new URL(req.url);
   const page = parseInt(url.searchParams.get("page")) || "1";
-  const limit = parseInt(url.searchParams.get("limit")) || "12";
+  const limit = parseInt(url.searchParams.get("limit")) || "16";
   const minPrice = parseInt(url.searchParams.get("minPrice")) || "1";
   let modelCategory = url.searchParams.get("category") || "all";
   const searchQuery = url.searchParams.get("search");
-
-  const productId = url.searchParams.get("productId");
-
-  if (productId)
-    return Response.json(
-      products.filter((item) => item.id === JSON.parse(productId))
-    );
 
   if (modelCategory === undefined) {
     modelCategory = "all";
   }
 
-  const modelCategoryList = [...new Set(products.map((item) => item.category))];
+  const modelCategoryList = [
+    ...new Set(
+      products.map((item) => {
+        const mainCategory = item.category.split("-");
+
+        return mainCategory[0];
+      })
+    ),
+  ];
 
   const searchProducts = (i) => {
     return i.filter(

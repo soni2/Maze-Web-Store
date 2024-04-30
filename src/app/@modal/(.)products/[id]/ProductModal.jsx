@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
+import CloseIcon from "@mui/icons-material/Close";
 
 export function ProductModal({
   title,
@@ -16,7 +16,9 @@ export function ProductModal({
 
   const router = useRouter();
   return (
-    <div className="relative p-0 w-11/12 md:w-2/3 lg:w-2/3 shadow-lg rounded-md bg-white max-w-screen-lg min-h-[450px] border-0 overflow-hidden">
+    <div
+      className="relative p-0 w-11/12 md:w-2/3 lg:w-2/3 shadow-lg rounded-md bg-white max-w-screen-lg min-h-[450px] border-0 overflow-hidden"
+    >
       <div className="mt-3 grid grid-cols-4 grid-flow-col !m-0 items-center justify-center">
         <div className="min-h-[450px] col-span-2 relative overflow-hidden flex items-center justify-center">
           {/* <img
@@ -43,10 +45,10 @@ export function ProductModal({
         <div className="mt-2 px-7 py-3 col-span-2 flex flex-col justify-between min-h-full">
           <div className="flex min-w-full justify-end">
             <button
-              className="text-sm font-bold text-black "
+              className="text-sm font-bold text-black hover:text-red-600 hover:rotate-90 duration-500"
               onClick={() => router.back()}
             >
-              X
+              <CloseIcon />
             </button>
           </div>
           <div className="flex">

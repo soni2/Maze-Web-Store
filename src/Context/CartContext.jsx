@@ -15,7 +15,7 @@ export function CartProvider({ children }) {
   const supabase = createClientComponentClient();
 
   async function getCartData() {
-    const url = `${baseUrl}/shoppingcart`;
+    const url = `${baseUrl}/api/shoppingcart`;
 
     await fetch(url)
       .then((res) => res.json())
@@ -59,6 +59,7 @@ export function CartProvider({ children }) {
         cart,
         baseUrl,
         productInCart,
+        getCartData,
       }}
     >
       {children}

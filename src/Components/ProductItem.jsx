@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { CartIcon } from "./icons";
-import { useCart } from "@/Hooks/useCart";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 export default function ProductItem({
   product,
@@ -19,10 +18,10 @@ export default function ProductItem({
 
   const handleCart = () => {
     const getInfo = cart.some((item) => item.prod_id === product.id);
+    setLoading(true);
     if (getInfo) return;
 
     addToCart(product);
-    setLoading(true);
   };
 
   return (
@@ -30,7 +29,7 @@ export default function ProductItem({
       title={product.title}
       key={product.id}
       className={` flex flex-col gap-1 bg-white
-      text-gray-900 dark:text-white p-4 justify-between duration-500 dark:bg-gray-900 cursor-pointer ${
+      text-gray-900 dark:text-white p-3 justify-between duration-500 dark:bg-blackDark cursor-pointer ${
         loading && "opacity-25 cursor-wait"
       }`}
       onMouseEnter={() => {
@@ -59,7 +58,7 @@ export default function ProductItem({
       </Link>
 
       <div className="grid grid-cols-4">
-        <h1 className="text-gray-300 text-sm capitalize col-span-3 items-stretch">
+        <h1 className="text-gray-300 text-sm capitalize col-span-3 items-stretch text-ellipsis text-nowrap">
           {product.category}
         </h1>
         {session ? (
@@ -67,27 +66,23 @@ export default function ProductItem({
             type="button"
             className={`py-2 rounded-md row-span-2 flex justify-center items-center w-full  ${
               !productIn
-                ? "bg-yellow-400 text-black hover:bg-yellow-500  duration-300 cursor-pointer"
-                : "bg-slate-700 hover:bg-slate-600 cursor-not-allowed"
+                ? "bg-primary text-white hover:bg-keppel-600  duration-300 cursor-pointer"
+                : "bg-slate-700 hover:bg-slate-600 cursor-not-allowed text-white"
             }`}
             onClick={() => handleCart(product)}
             title={!productIn ? "Add to cart" : "Already in cart"}
             disabled={productIn}
           >
-            {!productIn ? (
-              <CartIcon width={22} height={22} fill="#000" />
-            ) : (
-              <CartIcon width={22} height={22} />
-            )}
+            <ShoppingCartIcon />
           </button>
         ) : (
           <button
             type="button"
-            className="row-span-2 flex justify-center items-center w-full rounded-md bg-gray-400 text-gray-300 cursor-not-allowed"
+            className="row-span-2 flex justify-center items-center w-full rounded-md bg-gray-400 text-white cursor-not-allowed"
             disabled
             title="Must log-in to add this item to your cart"
           >
-            <CartIcon width={22} height={22} />
+            <ShoppingCartIcon />
           </button>
         )}
 

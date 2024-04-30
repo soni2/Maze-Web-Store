@@ -1,26 +1,24 @@
 "use client";
 
 import React from "react";
-import { CartIcon, User } from "../icons";
 import { useQuery } from "@/Hooks/useQuery";
-import Link from "next/link";
-import ThemeSwitch from "../ThemeSwitch";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import PersonIcon from "@mui/icons-material/Person";
 
 export default function UserCart() {
   const { handleCartToggle } = useQuery();
 
   return (
     <div className="flex justify-center items-center gap-2">
-      <button className="flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-full">
-        <User />
+      <button className="flex items-center hover:text-primary text-black dark:text-white font-bold duration-500 py-2 px-2">
+        <PersonIcon />
       </button>
       <button
         onClick={handleCartToggle}
-        className="flex items-center bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-2 rounded-full"
+        className="flex items-center hover:text-primary text-black dark:text-white font-bold duration-500 py-2 px-2"
       >
-        <CartIcon />
+        <ShoppingCartIcon />
       </button>
-      <ThemeSwitch />
     </div>
   );
 }

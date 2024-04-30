@@ -11,8 +11,21 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        witheLight: "rgb(220, 230, 230)",
-        blackDark: "rgb(0,0,0)",
+        primary: "#22c569",
+        blackDark: "#131313",
+        keppel: {
+          50: "#f0fdf5",
+          100: "#dcfce9",
+          200: "#bbf7d4",
+          300: "#86efb3",
+          400: "#39db7f",
+          500: "#16a353",
+          600: "#158044",
+          700: "#166539",
+          800: "#145331",
+          900: "#052e19",
+          950: "#0a1c16",
+        },
       },
     },
   },

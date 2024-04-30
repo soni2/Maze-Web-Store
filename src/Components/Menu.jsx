@@ -42,7 +42,7 @@ export default function Menu() {
   };
 
   return (
-    <aside className="bg-white p-4 w-1/5 text-gray-900 dark:bg-slate-900 dark:text-white duration-500">
+    <aside className="bg-white p-4 w-1/5 text-gray-900 dark:bg-blackDark dark:text-white duration-500">
       <div className="mb-4">
         <h2 className="text-lg font-bold mb-2">Menu</h2>
         <ul className="flex flex-col gap-2">
@@ -54,9 +54,9 @@ export default function Menu() {
           </li>
           {category?.map((item, index) => (
             <li
-              className={`py-2 capitalize pl-3 duration-200 rounded-sm hover:pl-5 ${
+              className={`py-2 text-sm pl-3 duration-200 rounded-sm uppercase hover:text-primary hover:pl-5 ${
                 item === params &&
-                "bg-slate-200 pl-6 hover:pl-6 dark:bg-slate-950 disabled:"
+                "bg-gray-100 pl-6 hover:pl-6 font-bold dark:bg-slate-950 text-primary disabled"
               }`}
               key={index}
             >
@@ -72,21 +72,23 @@ export default function Menu() {
       </div>
       <div>
         <h2 className="text-lg font-bold mb-2">Min. Price</h2>
-        <input
-          type="range"
-          min="0"
-          max="1000"
-          step="10"
-          className="w-4/6"
-          value={price}
-          onChange={handlePrice}
-        />
-        <button
-          onClick={handlerMinPrice}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-2/6"
-        >
-          {price}
-        </button>
+        <div className="flex flex-col gap-4">
+          <input
+            type="range"
+            min="0"
+            max="1000"
+            step="10"
+            className="rounded-lg appearance-none bg-gray-300 h-3 w-full accent-primary [::-ms-fill-lower]:bg-"
+            value={price}
+            onChange={handlePrice}
+          />
+          <button
+            onClick={handlerMinPrice}
+            className="border border-solid border-primary  duration-500 text-primary font-bold py-2 px-4 w-full hover:bg-primary hover:text-white"
+          >
+            ${price}
+          </button>
+        </div>
       </div>
     </aside>
   );

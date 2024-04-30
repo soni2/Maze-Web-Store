@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 
 export function CartItem({ item, updateItem, delItem }) {
   const [loading, setLoading] = useState(item.loading);
@@ -46,12 +47,10 @@ export function CartItem({ item, updateItem, delItem }) {
         <button onClick={() => addOne(item.id, item.quantity)}>+</button>
       </div>
       <button
-        className="text-gray-600 hover:text-red-500 w-full flex justify-end"
+        className="text-gray-600 hover:text-red-500 duration-300 w-full flex justify-end"
         onClick={() => deleteIt(item.id)}
       >
-        <svg className="h-6 w-6 fill-current" viewBox="0 0 24 24">
-          <path d="M19 13H5v-2h14v2z" />
-        </svg>
+        <RemoveShoppingCartIcon />
       </button>
     </li>
   );
