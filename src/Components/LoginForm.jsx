@@ -9,13 +9,22 @@ export const LoginForm = () => {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const supabase = createClientComponentClient();
+
+  function handlePassword(e) {
+    setPassword(e.target.value);
+  }
+  function handleEmail(e) {
+    setEmail(e.target.value);
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { error } = await supabase.auth.signInWithOtp({
+    const { error } = await supabase.auth.signInWithPassword({
       email,
+      password,
       options: {
         redirectTo: `${baseUrl}/auth/callback`,
       },
@@ -36,7 +45,7 @@ export const LoginForm = () => {
         type="email"
         name="email"
         placeholder="username@site.com"
-        onChange={(e) => setEmail(e.target.value)}
+        action={handleEmail}
         className="text-black px-3 py-2"
       />
       <label
@@ -45,7 +54,13 @@ export const LoginForm = () => {
       >
         Password
       </label>
-      <Input id="password" required type="password" placeholder="•••••••" />
+      <Input
+        id="password"
+        required
+        type="password"
+        placeholder="•••••••"
+        action={handlePassword}
+      />
       <button
         type="submit"
         className="w-full bg-white dark:bg-black p-4 rounded-md hover:bg-gray-500"

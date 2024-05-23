@@ -10,10 +10,13 @@ export const CartContext = createContext();
 export function CartProvider({ children }) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
+  // #region States
   const [cart, setCart] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const supabase = createClientComponentClient();
 
+  // #region Functions
   async function getCartData() {
     const url = `${baseUrl}/api/shoppingcart`;
 
@@ -29,6 +32,7 @@ export function CartProvider({ children }) {
   }, []);
 
   useEffect(() => {
+    setLoading(false);
     const channel = supabase
       .channel("realtime button change")
       .on(
@@ -58,6 +62,8 @@ export function CartProvider({ children }) {
       value={{
         cart,
         baseUrl,
+        loading,
+        setLoading,
         productInCart,
         getCartData,
       }}

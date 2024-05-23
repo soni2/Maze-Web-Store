@@ -1,6 +1,3 @@
-import Input from "@/Components/ui/Input";
-import Button from "@/Components/ui/Button";
-// import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Form } from "./Form";
 
 export default function Register() {

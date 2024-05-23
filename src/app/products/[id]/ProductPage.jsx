@@ -4,7 +4,10 @@ import { useEffect, useState } from "react";
 import ReviewModal from "./ReviewModal";
 import { useCart } from "@/Hooks/useCart";
 import StarIcon from "@mui/icons-material/Star";
-import Button from "@/Components/ui/Button";
+import { CartButton } from "@/Components/ui/Button";
+import EmptyBox from "@/Components/ui/EmptyBox";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { Carousel } from "@/Components/HomePage/Carousel";
 
 export function ProductPage({
   id,
@@ -13,16 +16,81 @@ export function ProductPage({
   images,
   description,
   price,
-  rating,
   addReview,
   route,
+  session,
+  addToCart,
+  suggestion,
 }) {
+  //#region State
   const [thumb, setThumb] = useState(thumbnail);
   const [modalOpen, setModalOpen] = useState(false);
   const [ratings, setRating] = useState([]);
   const [avg, setAvg] = useState([]);
+  const [quantity, setQuantity] = useState(1);
+  const [qtyModal, setQtyModal] = useState(false);
+  const [qtyMsg, setQtyMsg] = useState("");
 
-  const { baseUrl } = useCart();
+  //#region Custom Hooks
+  const { baseUrl, cart, setLoading } = useCart();
+
+  //#region Functions
+  function addQuantity() {
+    //Add more quantity to product
+    if (quantity === 10) {
+      setQtyModal(true);
+      setQtyMsg("Can't add more items");
+      setTimeout(() => {
+        setQtyModal(false);
+      }, [3000]);
+      return;
+    }
+    return setQuantity(quantity + 1);
+  }
+
+  function removeQuantity() {
+    //Remove quantity
+
+    if (quantity === 1) {
+      setQtyModal(true);
+      setQtyMsg("Quantity shouldn't be empty");
+      setTimeout(() => {
+        setQtyModal(false);
+      }, [3000]);
+      return;
+    }
+    setQuantity(quantity - 1);
+  }
+
+  const handleCart = (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    //Add item to cart
+    const getInfo = cart.some((item) => item.prod_id === id);
+    // setLoading(true);
+    if (getInfo) return;
+
+    addToCart({
+      id,
+      title,
+      thumbnail,
+      price,
+      quantity,
+    });
+  };
+
+  function placeQuantity(e) {
+    //Place quantity in the inputs
+
+    if (e.target.value > 10) {
+      return setQuantity(10);
+    } else if (e.target.value < 0) {
+      return setQuantity(1);
+    } else {
+      return setQuantity(e.target.value);
+    }
+  }
 
   useEffect(() => {
     const url = `${baseUrl}/api/ratings/${route}`;
@@ -39,11 +107,12 @@ export function ProductPage({
     fetchReview();
   }, []);
 
+  //#region Component
   return (
     <div className="bg-white pb-4 dark:bg-blackDark  dark:text-white max-w-[1200px]">
-      <div className="grid grid-cols-2 gap-6 xl:gap-12 items-start max-w-6xl px-4 mx-auto py-6 ">
+      <div className="grid md:grid-cols-2 grid-cols-1 gap-6 xl:gap-12 items-start max-w-6xl px-4 mx-auto py-6 ">
         <div className="grid gap-4 md:gap-10 items-start order-2 md:order-1 w-full h-full">
-          <div className="hidden md:flex items-start h-full w-full">
+          <div className="flex items-start h-full w-full">
             <div className="grid gap-4 content-between h-full w-full">
               <div className="flex flex-col gap-4">
                 <h1 className="font-bold text-3xl capitalize">{title}</h1>
@@ -74,120 +143,41 @@ export function ProductPage({
                   </div>
                 </div>
               </div>
-
-              <Button title="Add to cart">Add To Cart</Button>
+              <div
+                className={`col-span-5 border-2 border-red-600 flex items-center justify-center py-3 bg-red-600/20 duration-300 ${
+                  qtyModal ? "flex opacity-100" : "hidden opacity-0"
+                }`}
+              >
+                {qtyMsg}
+              </div>
+              <div className="grid grid-flow-row md:grid-flow-col md:grid-cols-5 gap-4">
+                <span className="flex items-center col-span-3 md:col-span-2 gap-2 border border-solid border-gray-200 px-4 justify-between">
+                  <p>Quantity: </p>
+                  <button onClick={removeQuantity}>-</button>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    placeholder="1"
+                    value={quantity}
+                    max="10"
+                    onChange={placeQuantity}
+                    className=" w-12 py-1 px-3 text-center "
+                  />
+                  <button onClick={addQuantity}>+</button>
+                </span>
+                <form className="col-span-3" onSubmit={handleCart}>
+                  <CartButton session={session} id={id} type={"submit"}>
+                    Add To Cart <ShoppingCartIcon />
+                  </CartButton>
+                </form>
+              </div>
             </div>
           </div>
-          {/* <form className="grid gap-4 md:gap-10">
-          <div className="grid gap-2">
-            <Label className="text-base" htmlFor="color">
-              Color
-            </Label>
-            <RadioGroup className="flex items-center gap-2" defaultValue="black" id="color">
-              <Label
-                className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                htmlFor="color-black"
-              >
-                <RadioGroupItem id="color-black" value="black" />
-                Black
-              </Label>
-              <Label
-                className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                htmlFor="color-white"
-              >
-                <RadioGroupItem id="color-white" value="white" />
-                White
-              </Label>
-              <Label
-                className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                htmlFor="color-blue"
-              >
-                <RadioGroupItem id="color-blue" value="blue" />
-                Blue
-              </Label>
-            </RadioGroup>
-          </div>
-          <div className="grid gap-2">
-            <Label className="text-base" htmlFor="size">
-              Size
-            </Label>
-            <RadioGroup className="flex items-center gap-2" defaultValue="m" id="size">
-              <Label
-                className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                htmlFor="size-xs"
-              >
-                <RadioGroupItem id="size-xs" value="xs" />
-                XS
-              </Label>
-              <Label
-                className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                htmlFor="size-s"
-              >
-                <RadioGroupItem id="size-s" value="s" />
-                S{"\n                            "}
-              </Label>
-              <Label
-                className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                htmlFor="size-m"
-              >
-                <RadioGroupItem id="size-m" value="m" />
-                M{"\n                            "}
-              </Label>
-              <Label
-                className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                htmlFor="size-l"
-              >
-                <RadioGroupItem id="size-l" value="l" />
-                L{"\n                            "}
-              </Label>
-              <Label
-                className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                htmlFor="size-xl"
-              >
-                <RadioGroupItem id="size-xl" value="xl" />
-                XL
-              </Label>
-            </RadioGroup>
-          </div>
-          <div className="grid gap-2">
-            <Label className="text-base" htmlFor="quantity">
-              Quantity
-            </Label>
-            <Select defaultValue="1">
-              <SelectTrigger className="w-24">
-                <SelectValue placeholder="Select" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="1">1</SelectItem>
-                <SelectItem value="2">2</SelectItem>
-                <SelectItem value="3">3</SelectItem>
-                <SelectItem value="4">4</SelectItem>
-                <SelectItem value="5">5</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <Button size="lg">Add to cart</Button>
-        </form>
-        <Separator /> */}
-          {/* <div className="grid gap-4 text-sm leading-loose">
-            <p>
-              Introducing the Acme Prism T-Shirt, a perfect blend of style and
-              comfort for the modern individual. This tee is crafted with a
-              meticulous composition of 60% combed ringspun cotton and 40%
-              polyester jersey, ensuring a soft and breathable fabric that feels
-              gentle against the skin.
-            </p>
-            <p>
-              The design of the Acme Prism T-Shirt is as striking as it is
-              comfortable. The shirt features a unique prism-inspired pattern
-              that adds a modern and eye-catching touch to your ensemble.
-            </p>
-          </div> */}
         </div>
         <div className="grid gap-4">
           <img
             alt="Product Image"
-            className="aspect-square object-cover border border-gray-200 w-full rounded-lg overflow-hidden dark:border-gray-800"
+            className="aspect-square object-cover border border-gray-200 w-full overflow-hidden dark:border-gray-800"
             height={600}
             src={thumb}
             width={600}
@@ -196,7 +186,7 @@ export function ProductPage({
             {images?.map((image, index) => (
               <button
                 key={index}
-                className="border hover:border-gray-900 rounded-lg overflow-hidden transition-colors dark:hover:border-gray-50"
+                className="border hover:border-gray-900 overflow-hidden transition-colors dark:hover:border-gray-50"
               >
                 <img
                   alt="Preview thumbnail"
@@ -212,7 +202,7 @@ export function ProductPage({
           </div>
         </div>
         <div className="grid gap-3 items-start order-1">
-          <div className="flex md:hidden items-start">
+          {/* <div className="flex md:hidden items-start">
             <div className="grid gap-4">
               <h1 className="font-bold text-2xl sm:text-3xl">{title}</h1>
               <div>
@@ -234,40 +224,49 @@ export function ProductPage({
                       />
                     );
                   })}
-                  {/* <StarIcon className="w-5 h-5 fill-primary" />
-                  <StarIcon className="w-5 h-5 fill-primary" />
-                  <StarIcon className="w-5 h-5 fill-muted stroke-muted-foreground" />
-                  <StarIcon className="w-5 h-5 fill-muted stroke-muted-foreground" /> */}
                 </div>
               </div>
             </div>
             <div className="text-4xl font-bold ml-auto">${price}</div>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="grid gap-6 md:gap-12 max-w-6xl px-4 mx-auto">
+        {/* Carousel */}
+        <div>
+          <h2 className="text-2xl font-bold">Related Products</h2>
+          <Carousel
+            addToCart={addToCart}
+            session={session}
+            products={suggestion}
+            id={id}
+          />
+        </div>
+        {/* Ratings */}
         <div className="grid gap-4">
-          <div className="flex gap-4">
-            <h2 className="text-2xl font-bold">Customer Reviews</h2>
-            <button
-              onClick={() => setModalOpen(true)}
-              className="bg-primary px-4 py-3 rounded-md font-bold "
-            >
-              Write a Review
-            </button>
+          <div className="flex gap-2 items-center">
+            <h2 className="text-2xl font-bold">Customer Reviews |</h2>
+            {session && (
+              <button
+                onClick={() => setModalOpen(true)}
+                className="border-2 border-solid border-primary bg-white dark:bg-blackDark px-4 py-3 font-bold hover:bg-primary duration-500 "
+              >
+                Write a Review
+              </button>
+            )}
           </div>
-
-          {/* Ratings */}
           <div className="grid gap-4">
             {ratings.length === 0 ? (
-              <h1>Nothing to see Here</h1>
+              <div className="flex w-full items-center justify-center hover:opacity-100 duration-500">
+                <EmptyBox className="fill-black/15 w-[360px] dark:fill-white/40 hover:fill-primary duration-100" />
+              </div>
             ) : (
               ratings?.map((e, i) => {
                 const date = new Date(e.created_at);
 
-                const month = date.getMonth();
-                const day = date.getDay();
-                const year = date.getFullYear();
+                const month = date.toString().split(" ")[1];
+                const day = date.toString().split(" ")[2];
+                const year = date.toString().split(" ")[3];
 
                 return (
                   <div key={i} className="grid gap-2 border-t pt-4">
@@ -297,101 +296,6 @@ export function ProductPage({
             )}
           </div>
         </div>
-        {/* <div className="grid gap-4">
-          <h2 className="text-2xl font-bold">Product Details</h2>
-          <div className="grid gap-2 text-sm leading-loose">
-            <p>
-              The Acme Prism T-Shirt is crafted with the perfect blend of style
-              and comfort, making it an essential piece for fashion enthusiasts.
-              The shirt features a modern and eye-catching design, with a unique
-              prism-inspired pattern that adds a touch of sophistication to any
-              ensemble.
-            </p>
-            <p>
-              In addition to its stylish design, the Acme Prism T-Shirt is
-              constructed with high-quality materials to ensure durability and
-              long-lasting comfort. The shirt is made from a premium blend of
-              combed ringspun cotton and polyester jersey, providing a soft and
-              breathable feel against the skin.
-            </p>
-            <p>
-              Whether you are dressing up for a casual day out or looking to
-              elevate your streetwear style, the Acme Prism T-Shirt is the
-              perfect choice. Its slim fit silhouette offers a flattering look,
-              while the short sleeves provide a comfortable and unrestricted
-              range of motion.
-            </p>
-          </div>
-        </div> */}
-        {/* <div className="grid gap-4">
-        <h2 className="text-2xl font-bold">Related Products</h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          <Card>
-            <Link className="absolute inset-0 z-10 sm:[&:inset-0]" href="#">
-              <span className="sr-only">View Product</span>
-            </Link>
-            <CardContent className="flex flex-col justify-end">
-              <h3 className="font-bold text-sm">Acme Sunset Collection: Horizon Sneakers</h3>
-              <p className="text-sm text-muted">$129</p>
-            </CardContent>
-            <img
-              alt="Product Image"
-              className="aspect-16/9 object-cover"
-              height={200}
-              src="/placeholder.svg"
-              width={300}
-            />
-          </Card>
-          <Card>
-            <Link className="absolute inset-0 z-10 sm:[&:inset-0]" href="#">
-              <span className="sr-only">View Product</span>
-            </Link>
-            <CardContent className="flex flex-col justify-end">
-              <h3 className="font-bold text-sm">Acme Sunset Collection: Horizon Sneakers</h3>
-              <p className="text-sm text-muted">$129</p>
-            </CardContent>
-            <img
-              alt="Product Image"
-              className="aspect-16/9 object-cover"
-              height={200}
-              src="/placeholder.svg"
-              width={300}
-            />
-          </Card>
-          <Card>
-            <Link className="absolute inset-0 z-10 sm:[&:inset-0]" href="#">
-              <span className="sr-only">View Product</span>
-            </Link>
-            <CardContent className="flex flex-col justify-end">
-              <h3 className="font-bold text-sm">Acme Sunset Collection: Horizon Sneakers</h3>
-              <p className="text-sm text-muted">$129</p>
-            </CardContent>
-            <img
-              alt="Product Image"
-              className="aspect-16/9 object-cover"
-              height={200}
-              src="/placeholder.svg"
-              width={300}
-            />
-          </Card>
-          <Card>
-            <Link className="absolute inset-0 z-10 sm:[&:inset-0]" href="#">
-              <span className="sr-only">View Product</span>
-            </Link>
-            <CardContent className="flex flex-col justify-end">
-              <h3 className="font-bold text-sm">Acme Sunset Collection: Horizon Sneakers</h3>
-              <p className="text-sm text-muted">$129</p>
-            </CardContent>
-            <img
-              alt="Product Image"
-              className="aspect-16/9 object-cover"
-              height={200}
-              src="/placeholder.svg"
-              width={300}
-            />
-          </Card>
-        </div>
-      </div> */}
         <ReviewModal
           title={title}
           thumbnail={thumbnail}

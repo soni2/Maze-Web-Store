@@ -9,7 +9,7 @@ export default function Menu() {
 
   const router = useRouter();
 
-  const { productsData, queries, setQueries } = useQuery();
+  const { productsData, queries, setQueries, loading } = useQuery();
 
   const { category } = productsData;
 
@@ -42,32 +42,38 @@ export default function Menu() {
   };
 
   return (
-    <aside className="bg-white p-4 w-1/5 text-gray-900 dark:bg-blackDark dark:text-white duration-500">
+    <aside className="bg-white p-4 w-1/5 text-gray-900 dark:bg-blackDark dark:text-white duration-500 hidden md:flex flex-col">
       <div className="mb-4">
         <h2 className="text-lg font-bold mb-2">Menu</h2>
         <ul className="flex flex-col gap-2">
-          <li
-            className="cursor-pointer pl-3 hover:pl-5 duration-300"
-            onClick={() => handleCategory("all")}
-          >
-            All
-          </li>
-          {category?.map((item, index) => (
-            <li
-              className={`py-2 text-sm pl-3 duration-200 rounded-sm uppercase hover:text-primary hover:pl-5 ${
-                item === params &&
-                "bg-gray-100 pl-6 hover:pl-6 font-bold dark:bg-slate-950 text-primary disabled"
-              }`}
-              key={index}
-            >
-              <a
-                className={`cursor-pointer`}
-                onClick={() => handleCategory(item)}
+          {loading ? (
+            <Loading />
+          ) : (
+            <>
+              <li
+                className="cursor-pointer pl-3 hover:pl-5 duration-300"
+                onClick={() => handleCategory("all")}
               >
-                {item}
-              </a>
-            </li>
-          ))}
+                All
+              </li>
+              {category?.map((item, index) => (
+                <li
+                  className={`py-2 text-sm pl-3 duration-200 rounded-sm uppercase hover:text-primary hover:pl-5 ${
+                    item === params &&
+                    "bg-gray-100 pl-6 hover:pl-6 font-bold dark:bg-slate-950 text-primary disabled"
+                  }`}
+                  key={index}
+                >
+                  <a
+                    className={`cursor-pointer`}
+                    onClick={() => handleCategory(item)}
+                  >
+                    {item}
+                  </a>
+                </li>
+              ))}
+            </>
+          )}
         </ul>
       </div>
       <div>
@@ -92,4 +98,12 @@ export default function Menu() {
       </div>
     </aside>
   );
+}
+
+export function Loading() {
+  return [...Array(15)].map((e, i) => (
+    <li key={i} className="my-2">
+      <div className="w-full h-4 bg-gray-200 dark:bg-keppel-900" />
+    </li>
+  ));
 }

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import CostumerCard from "./CostumerCard";
 
 export default function Costumers() {
   return (
@@ -14,38 +14,7 @@ export default function Costumers() {
             </p>
           </div>
         </div>
-        <div className="mx-auto grid items-start gap-8 sm:max-w-4xl sm:grid-cols-2 md:gap-12 lg:max-w-5xl lg:grid-cols-3">
-          <div className="grid gap-3 border-solid border-2 border-white px-4 py-5">
-            <h3 className="text-lg font-bold">♦ ♦ ♦ ♦ ♦</h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              Our experience with this product has been amazing.
-            </p>
-            <div className="flex flex-row gap-2 items-center">
-              <span className="w-9 h-9 bg-gray-50 inherit rounded-full" />
-              <h3 className="">John Doe</h3>
-            </div>
-          </div>
-          <div className="grid gap-1 border-solid border-2 border-white px-4 py-5 h-full">
-            <h3 className="text-lg font-bold">♦ ♦ ♦ ♦ ♦</h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              Our experience with this product has been amazing.
-            </p>
-            <div className="flex flex-row gap-2 items-center">
-              <span className="w-9 h-9 bg-gray-50 inherit rounded-full" />
-              <h3 className="">John Doe</h3>
-            </div>
-          </div>
-          <div className="grid gap-1 border-solid border-2 border-white px-4 py-5s h-full">
-            <h3 className="text-lg font-bold">♦ ♦ ♦ ♦ ♦</h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              Our experience with this product has been amazing.
-            </p>
-            <div className="flex flex-row gap-2 items-center">
-              <span className="w-9 h-9 bg-gray-50 inherit rounded-full" />
-              <h3 className="">John Doe</h3>
-            </div>
-          </div>
-        </div>
+        <CostumerCard />
       </div>
     </section>
   );

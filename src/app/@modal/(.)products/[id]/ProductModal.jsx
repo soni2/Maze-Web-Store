@@ -2,31 +2,86 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import CloseIcon from "@mui/icons-material/Close";
+import { CartButton } from "@/Components/ui/Button";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 export function ProductModal({
+  id,
   title,
   thumbnail,
   images,
   description,
   price,
   rating,
-  stocks,
+  addToCart,
+  session,
 }) {
   const [thumb, setThumb] = useState(thumbnail);
+  const [quantity, setQuantity] = useState(1);
+
+  //#region Function
+  function addQuantity() {
+    //Add more quantity to product
+    if (quantity === 10) {
+      setQtyModal(true);
+      setQtyMsg("Can't add more items");
+      setTimeout(() => {
+        setQtyModal(false);
+      }, [3000]);
+      return;
+    }
+    return setQuantity(quantity + 1);
+  }
+
+  function removeQuantity() {
+    //Remove quantity
+
+    if (quantity === 1) {
+      setQtyModal(true);
+      setQtyMsg("Quantity shouldn't be empty");
+      setTimeout(() => {
+        setQtyModal(false);
+      }, [3000]);
+      return;
+    }
+    setQuantity(quantity - 1);
+  }
+
+  function placeQuantity(e) {
+    //Place quantity in the inputs
+
+    if (e.target.value > 10) {
+      return setQuantity(10);
+    } else if (e.target.value < 0) {
+      return setQuantity(1);
+    } else {
+      return setQuantity(e.target.value);
+    }
+  }
+
+  const handleCart = (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    //Add item to cart
+    const getInfo = cart.some((item) => item.prod_id === id);
+    // setLoading(true);
+    if (getInfo) return;
+
+    addToCart({
+      id,
+      title,
+      thumbnail,
+      price,
+      quantity,
+    });
+  };
 
   const router = useRouter();
   return (
-    <div
-      className="relative p-0 w-11/12 md:w-2/3 lg:w-2/3 shadow-lg rounded-md bg-white max-w-screen-lg min-h-[450px] border-0 overflow-hidden"
-    >
+    <div className="shadow-lg bg-white max-w-screen-lg min-h-[450px] border-0 overflow-hidden">
       <div className="mt-3 grid grid-cols-4 grid-flow-col !m-0 items-center justify-center">
         <div className="min-h-[450px] col-span-2 relative overflow-hidden flex items-center justify-center">
-          {/* <img
-            className="h-full absolute z-50"
-            alt="Smartwatch"
-            src={thumb}
-            style={{ objectFit: "contain" }}
-          /> */}
           <div
             className={`z-50 min-h-full min-w-full block absolute inset-0 bg-contain bg-no-repeat bg-center`}
             alt={title}
@@ -35,7 +90,7 @@ export function ProductModal({
             }}
           ></div>
           <div
-            className="block blur-lg absolute inset-0 bg-cover bg-no-repeat bg-center"
+            className={`block blur-lg absolute inset-0 bg-cover bg-no-repeat bg-center`}
             alt={title}
             style={{
               backgroundImage: `url("${thumb}")`,
@@ -76,23 +131,26 @@ export function ProductModal({
               <div className="border-t-2 border-gray-200 mt-3" />
               <p className="text-gray-600 mt-3">{description}</p>
               <div className="mt-4">
-                <div className="flex justify-between">
-                  <div className="flex items-center">
-                    <label
-                      className="block text-sm font-medium text-gray-700"
-                      htmlFor="quantity"
-                    >
-                      QUANTITY
-                    </label>
-                    {/* <Input
-                      className="ml-3 block w-16 pl-2 pr-7 py-2 border border-gray-300 rounded-md"
-                      id="quantity"
-                      min="1"
-                      name="quantity"
-                      type="number"
-                    /> */}
-                  </div>
-                  {/* <Button className="mt-4">ADD TO CART</Button> */}
+                <div className="grid grid-cols-6 gap-4">
+                  <span className="flex items-center col-span-3 gap-2 border border-solid border-gray-200 px-3 justify-between">
+                    <p>Quantity: </p>
+                    <button onClick={removeQuantity}>-</button>
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      placeholder="1"
+                      value={quantity}
+                      max="10"
+                      onChange={placeQuantity}
+                      className=" w-12 py-1 px-3 text-center "
+                    />
+                    <button onClick={addQuantity}>+</button>
+                  </span>
+                  <form className="col-span-3" onSubmit={handleCart}>
+                    <CartButton session={session} id={id} type={"submit"}>
+                      Add To Cart <ShoppingCartIcon />
+                    </CartButton>
+                  </form>
                 </div>
               </div>
             </div>

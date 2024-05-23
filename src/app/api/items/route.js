@@ -16,8 +16,9 @@ export async function GET(req) {
 
   if (modelCategory === undefined) {
     modelCategory = "all";
+  } else if (modelCategory === "home") {
+    modelCategory = "home-decoration";
   }
-
   const modelCategoryList = [
     ...new Set(
       products.map((item) => {
@@ -48,11 +49,30 @@ export async function GET(req) {
       );
     }
 
-    return product.filter(
-      (item) =>
-        item.price >= minPrice &&
-        (modelCategory === "all" || item.category === modelCategory)
-    );
+    return product.filter((item) => {
+      if (modelCategory === "mens") {
+        return (
+          item.price >= minPrice &&
+          (item.category === "mens-shoes" ||
+            item.category === "mens-shirts" ||
+            item.category === "mens-watches")
+        );
+      } else if (modelCategory === "womens") {
+        return (
+          item.price >= minPrice &&
+          (item.category === "womens-shoes" ||
+            item.category === "womens-bags" ||
+            item.category === "womens-jewellery" ||
+            item.category === "womens-dresses" ||
+            item.category === "womens-watches")
+        );
+      } else {
+        return (
+          item.price >= minPrice &&
+          (modelCategory === "all" || item.category === modelCategory)
+        );
+      }
+    });
   };
 
   const totalPage = Math.ceil(filterProduct(products).length / limit);

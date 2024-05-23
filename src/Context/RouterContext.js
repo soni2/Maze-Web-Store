@@ -19,6 +19,8 @@ export const RouterProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [productsData, setProductsData] = useState([]);
   const [cartOpen, setCartOpen] = useState(false);
+  const [userOpen, setUserOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
 
   const [queries, setQueries] = useState({
@@ -32,9 +34,14 @@ export const RouterProvider = ({ children }) => {
   const handleCartToggle = () => {
     setCartOpen(!cartOpen);
   };
-
+  const handleUserToggle = () => {
+    setUserOpen(!userOpen);
+  };
   const handleLoginToggle = () => {
     setLoginOpen(!loginOpen);
+  };
+  const handleMenuToggle = () => {
+    setMenuOpen(!menuOpen);
   };
 
   // Manejo del buscador
@@ -74,12 +81,16 @@ export const RouterProvider = ({ children }) => {
         minPrice,
         category,
         cartOpen,
+        userOpen,
         setCartOpen,
         handleCartToggle,
+        handleUserToggle,
         handleLoginToggle,
         loginOpen,
         setLoginOpen,
         fetchData,
+        menuOpen,
+        handleMenuToggle,
       }}
     >
       {children}

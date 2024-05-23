@@ -46,7 +46,7 @@ export default async function Products() {
   };
 
   return (
-    <div className="flex w-full max-w-[1024px]">
+    <div className="flex w-full max-w-[1024px] justify-center">
       <Menu />
       <ProductsList session={session} addToCart={addToCart} />
     </div>

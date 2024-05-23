@@ -27,6 +27,9 @@ module.exports = {
           950: "#0a1c16",
         },
       },
+      dropShadow: {
+        button: "0 0 15px #22c569, 0 0 50px",
+      },
     },
   },
   plugins: [],
