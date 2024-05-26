@@ -15,13 +15,14 @@ export default function Button({ title, children, type, action }) {
 }
 
 // #region Cart Button
-export function CartButton({ children, type, session, id }) {
+export function CartButton({ action, children, type, session, id }) {
   const { productInCart, loading } = useCart();
 
   const productIn = productInCart(id);
 
   return session ? (
     <button
+      onClick={action}
       type={type}
       className={`row-span-2 flex justify-center px-4 py-3 items-center w-full  ${
         !productIn

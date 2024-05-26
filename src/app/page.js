@@ -23,13 +23,11 @@ export default async function Home() {
         <main className="flex-1">
           <Hero />
           <Featured />
-          {/* <Carousel /> */}
           <Costumers />
-          {/* <CardCarousel /> */}
           <Cart />
           <User />
           <Footer />
-          <FlyoutMenu />
+          <FlyoutMenu session={session} />
         </main>
       </div>
     </>

@@ -4,12 +4,18 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Input from "@/Components/ui/Input";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export const LoginForm = () => {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const router = useRouter();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [statusMsg, setStatusMsg] = useState("");
+
   const supabase = createClientComponentClient();
 
   function handlePassword(e) {
@@ -22,6 +28,8 @@ export const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setLoading(true);
+
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -30,11 +38,27 @@ export const LoginForm = () => {
       },
     });
 
-    console.log(error);
+    if (error) {
+      setError(true);
+      setStatusMsg(error.message);
+      setTimeout(() => {
+        setError(false);
+      }, 4000);
+    } else {
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 1500);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
+    <form
+      onSubmit={handleSubmit}
+      className="flex relative flex-col gap-4 w-full"
+    >
+      {loading && (
+        <div className="bg-slate-50/80 animate-pulse absolute w-full h-full z-50" />
+      )}
       <label
         htmlFor="email"
         className="block text-xs font-semibold text-gray-600 uppercase"

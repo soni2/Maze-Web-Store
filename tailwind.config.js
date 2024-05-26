@@ -10,6 +10,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      width: {
+        minus: "calc(100vw - 20px)",
+      },
       colors: {
         primary: "#22c569",
         blackDark: "#131313",

@@ -5,12 +5,14 @@ import { CartItem } from "./CartItem";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useQuery } from "@/Hooks/useQuery";
 import CloseIcon from "@mui/icons-material/Close";
+import Button from "./ui/Button";
 
 export function FlyoutCart({ delItem, updateItem }) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
   const [cart, setCart] = useState([]);
-  const [total, setTotal] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [shipping, setShipping] = useState(0);
 
   const { handleCartToggle, cartOpen } = useQuery();
 
@@ -20,21 +22,11 @@ export function FlyoutCart({ delItem, updateItem }) {
     fetch(`${baseUrl}/api/shoppingcart`)
       .then((res) => res.json())
       .then((res) => {
-        return setCart(res);
+        setCart(res.products);
+        setTotal(res.total);
+        setShipping(res.shipping);
       });
   };
-
-  function getTotal() {
-    if (cart.length === 0) {
-      return setTotal(0);
-    }
-
-    const total = cart.reduce(
-      (acc, element) => acc + element.price * element.quantity,
-      0
-    );
-    setTotal(total);
-  }
 
   useEffect(() => {
     getCartData();
@@ -61,10 +53,6 @@ export function FlyoutCart({ delItem, updateItem }) {
     };
   }, [supabase, cart]);
 
-  useEffect(() => {
-    getTotal();
-  }, [cart]);
-
   return (
     <div
       className={`fixed inset-0 z-10 overflow-hidden backdrop-blur-sm ${
@@ -77,13 +65,11 @@ export function FlyoutCart({ delItem, updateItem }) {
       ></div>
       <div className="fixed inset-y-0 right-0 max-w-full flex">
         <div className="w-screen max-w-lg">
-          <div className="bg-white grid grid-rows-12 h-full p-4">
+          <div className="bg-white grid grid-rows-12 h-full p-4 dark:bg-blackDark">
             <div className="flex flex-row justify-between w-full relative">
-              <h2 className="text-md text-gray-600 font-light tracking-wider">
-                ORDER
-              </h2>
+              <h2 className="text-md font-light tracking-wider">ORDER</h2>
               <h2
-                className="text-md text-gray-600 font-light tracking-wider cursor-pointer"
+                className="text-md font-light tracking-wider cursor-pointer"
                 onClick={handleCartToggle}
               >
                 <CloseIcon />
@@ -102,10 +88,10 @@ export function FlyoutCart({ delItem, updateItem }) {
                 ))}
               </ul>
             </div>
-            <div className="text-black bottom-0 w-full row-span-2 relative flex flex-col justify-end">
+            <div className="bottom-0 w-full row-span-2 relative flex flex-col justify-end">
               <div className="flex justify-between">
                 <span>
-                  <h1>Total</h1>
+                  <h1>Subtotal</h1>
                 </span>
                 <span>
                   <h1>${total}.00</h1>
@@ -116,21 +102,23 @@ export function FlyoutCart({ delItem, updateItem }) {
                   <h1>Shipping</h1>
                 </span>
                 <span>
-                  <h1>$10.00</h1>
+                  <h1>${shipping}.00</h1>
                 </span>
               </div>
               <div className="flex justify-between">
                 <span>
-                  <h1>Subtotal</h1>
+                  <h1>Total</h1>
                 </span>
-                <span>{/* <h1>${total + 10}.00</h1> */}</span>
+                <span>
+                  <h1>${total + shipping}.00</h1>
+                </span>
               </div>
-              <button
+              <Button
                 // onClick={handleCartToggle}
                 className="bg-gray-500 w-full hover:bg-gray-700 text-white py-2 px-4 rounded mt-3"
               >
-                Close Cart
-              </button>
+                Checkout
+              </Button>
             </div>
           </div>
         </div>

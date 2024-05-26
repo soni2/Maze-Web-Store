@@ -30,8 +30,6 @@ export function Form() {
     }, 4000);
   }
 
-  useEffect(() => {}, [repeat]);
-
   const onSubmit = (formData) => {
     // formData.preventDefault();
 

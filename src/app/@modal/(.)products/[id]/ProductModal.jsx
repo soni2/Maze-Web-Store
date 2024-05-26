@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import CloseIcon from "@mui/icons-material/Close";
 import { CartButton } from "@/Components/ui/Button";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { useCart } from "@/Hooks/useCart";
 
 export function ProductModal({
   id,
@@ -18,6 +19,7 @@ export function ProductModal({
 }) {
   const [thumb, setThumb] = useState(thumbnail);
   const [quantity, setQuantity] = useState(1);
+  const { cart } = useCart();
 
   //#region Function
   function addQuantity() {
@@ -61,7 +63,6 @@ export function ProductModal({
 
   const handleCart = (e) => {
     e.preventDefault();
-    setLoading(true);
 
     //Add item to cart
     const getInfo = cart.some((item) => item.prod_id === id);
@@ -79,11 +80,26 @@ export function ProductModal({
 
   const router = useRouter();
   return (
-    <div className="shadow-lg bg-white max-w-screen-lg min-h-[450px] border-0 overflow-hidden">
+    <div className="shadow-lg bg-white max-w-screen-lg min-h-[450px] border-0 overflow-hidden dark:bg-blackDark">
       <div className="mt-3 grid grid-cols-4 grid-flow-col !m-0 items-center justify-center">
         <div className="min-h-[450px] col-span-2 relative overflow-hidden flex items-center justify-center">
+          <div className="z-50 absolute flex bottom-2">
+            {images?.map((image, index) => (
+              <img
+                alt="Smartwatch thumbnail"
+                className="h-12 w-12 border-2 border-slate-600 mx-1"
+                src={image}
+                style={{
+                  aspectRatio: "50/50",
+                  objectFit: "cover",
+                }}
+                key={index}
+                onMouseEnter={() => setThumb(image)}
+              />
+            ))}
+          </div>
           <div
-            className={`z-50 min-h-full min-w-full block absolute inset-0 bg-contain bg-no-repeat bg-center`}
+            className={`z-30 min-h-full min-w-full block absolute inset-0 bg-contain bg-no-repeat bg-center`}
             alt={title}
             style={{
               backgroundImage: `url("${thumb}")`,
@@ -97,20 +113,18 @@ export function ProductModal({
             }}
           ></div>
         </div>
-        <div className="mt-2 px-7 py-3 col-span-2 flex flex-col justify-between min-h-full">
+        <div className="mt-2 px-7 py-3 col-span-2 min-h-full">
           <div className="flex min-w-full justify-end">
             <button
-              className="text-sm font-bold text-black hover:text-red-600 hover:rotate-90 duration-500"
+              className="text-sm font-bold hover:text-red-600 hover:rotate-90 duration-500"
               onClick={() => router.back()}
             >
               <CloseIcon />
             </button>
           </div>
-          <div className="flex">
-            <div className="ml-4">
-              <h3 className="text-lg leading-6 font-medium text-gray-900">
-                {title}
-              </h3>
+          <div className="ml-4 flex flex-col justify-between h-full">
+            <div>
+              <h3 className="text-lg leading-6 font-medium">{title}</h3>
               <div className="flex">
                 {[...Array(5)].map((star, index) => {
                   const currentRating = index + 1;
@@ -127,48 +141,32 @@ export function ProductModal({
                   );
                 })}
               </div>
-              <p className="text-4xl font-bold text-gray-900 mt-4">${price}</p>
+              <p className="text-4xl font-bold mt-4">${price}</p>
               <div className="border-t-2 border-gray-200 mt-3" />
-              <p className="text-gray-600 mt-3">{description}</p>
-              <div className="mt-4">
-                <div className="grid grid-cols-6 gap-4">
-                  <span className="flex items-center col-span-3 gap-2 border border-solid border-gray-200 px-3 justify-between">
-                    <p>Quantity: </p>
-                    <button onClick={removeQuantity}>-</button>
-                    <input
-                      type="text"
-                      inputMode="numeric"
-                      placeholder="1"
-                      value={quantity}
-                      max="10"
-                      onChange={placeQuantity}
-                      className=" w-12 py-1 px-3 text-center "
-                    />
-                    <button onClick={addQuantity}>+</button>
-                  </span>
-                  <form className="col-span-3" onSubmit={handleCart}>
-                    <CartButton session={session} id={id} type={"submit"}>
-                      Add To Cart <ShoppingCartIcon />
-                    </CartButton>
-                  </form>
-                </div>
-              </div>
+              <p className="mt-3">{description}</p>
             </div>
-          </div>
-          <div className="flex justify-center mt-4">
-            {images?.map((image, index) => (
-              <img
-                alt="Smartwatch thumbnail"
-                className="h-12 w-12 rounded-full border-2 border-blue-500 mx-1"
-                src={image}
-                style={{
-                  aspectRatio: "50/50",
-                  objectFit: "cover",
-                }}
-                key={index}
-                onMouseEnter={() => setThumb(image)}
+            <span className="mt-4 flex items-center col-span-3 gap-2 border border-solid border-gray-200 px-3 justify-between">
+              <p>Quantity: </p>
+              <button onClick={removeQuantity}>-</button>
+              <input
+                type="text"
+                inputMode="numeric"
+                placeholder="1"
+                value={quantity}
+                max="10"
+                onChange={placeQuantity}
+                className=" w-12 py-1 px-3 text-center "
               />
-            ))}
+              <button onClick={addQuantity}>+</button>
+            </span>
+            <CartButton
+              action={handleCart}
+              session={session}
+              id={id}
+              type={"submit"}
+            >
+              Add To Cart <ShoppingCartIcon />
+            </CartButton>
           </div>
         </div>
       </div>

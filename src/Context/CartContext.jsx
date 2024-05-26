@@ -23,7 +23,7 @@ export function CartProvider({ children }) {
     await fetch(url)
       .then((res) => res.json())
       .then((res) => {
-        setCart(res);
+        setCart(res.products);
       });
   }
 

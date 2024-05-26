@@ -26,7 +26,7 @@ export default async function Layout({ children }) {
         <div className="min-w-80 pb-8 justify-center">
           {children}
           <FlyoutCart delItem={delItem} updateItem={updateItem} />
-          <FlyoutMenu />
+          <FlyoutMenu session={session} />
           <User />
         </div>
       </div>

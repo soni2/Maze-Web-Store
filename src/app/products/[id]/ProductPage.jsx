@@ -231,7 +231,7 @@ export function ProductPage({
           </div> */}
         </div>
       </div>
-      <div className="grid gap-6 md:gap-12 max-w-6xl px-4 mx-auto">
+      <div className="grid gap-6 md:gap-12 max-w-6xl px-4">
         {/* Carousel */}
         <div>
           <h2 className="text-2xl font-bold">Related Products</h2>

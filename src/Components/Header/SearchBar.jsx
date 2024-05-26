@@ -7,7 +7,7 @@ import { useState } from "react";
 const SearchBar = () => {
   const router = useRouter();
 
-  const { setQueries } = useQuery();
+  const { setQueries, handleMenuToggle } = useQuery();
 
   const [search, setSearch] = useState("");
 
@@ -27,14 +27,16 @@ const SearchBar = () => {
       page: 1,
     }));
 
+    handleMenuToggle();
+
     await new Promise((resolve) => setTimeout(resolve, 0));
 
     router.push(`/products?search=${search}`);
   }
 
   return (
-    <form onSubmit={handleSubmit} className="w-6/12 max-w-[550px]">
-      <div className="hidden sm:block">
+    <form onSubmit={handleSubmit} className="w-full sm:w-6/12 max-w-[550px]">
+      <div className="">
         {/* <label
           htmlFor="search-dropdown"
           className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white duration-500"

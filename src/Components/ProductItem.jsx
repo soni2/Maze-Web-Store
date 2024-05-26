@@ -54,7 +54,7 @@ export default function ProductItem({
         setHover(false);
       }}
     >
-      <Link href={`/products/${product.id}`} passHref>
+      <Link href={`/products/${product.id}`} className="hidden md:flex">
         <img
           className={`${hover && "scale-[1.02]"} duration-500`}
           src={product.thumbnail}
@@ -65,12 +65,22 @@ export default function ProductItem({
           }}
         />
       </Link>
+      <a href={`/products/${product.id}`} className="flex md:hidden">
+        <img
+          className={`${hover && "scale-[1.02]"} duration-500`}
+          src={product.thumbnail}
+          alt={product.title}
+          style={{
+            aspectRatio: "10/12",
+            objectFit: "cover",
+          }}
+        />
+      </a>
 
       <Link
         href={`/products/${product.id}`}
         scroll={false}
         className="hidden md:flex"
-        passHref
       >
         <div className="overflow-hidden text-ellipsis text-nowrap">
           <strong>{product.title}</strong>

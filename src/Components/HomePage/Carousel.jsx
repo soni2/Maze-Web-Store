@@ -10,10 +10,16 @@ export function Carousel({ products, session, addToCart }) {
 
   return (
     <>
-      <div className="flex flex-row items-center justify-center space-x-2 w-full max-w-[1800px] ">
-        <div className="overflow-hidden w-350 md:full">
+      <div className="flex flex-row items-center justify-center space-x-2 w-minus max-w-[1800px] ">
+        <div className="overflow-hidden w-screen md:full ">
           {products ? (
-            <Swiper spaceBetween={30} slidesPerView={"auto"} pagination={true}>
+            <Swiper
+              spaceBetween={30}
+              slidesPerView={"auto"}
+              pagination={true}
+              className="overflow-hidden"
+              style={{ width: "calc(100vw - 20px)" }}
+            >
               {products.map((t) => {
                 const productIn = productInCart(t.id);
 

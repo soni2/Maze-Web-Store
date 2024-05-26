@@ -5,8 +5,9 @@ import { useQuery } from "@/Hooks/useQuery";
 import Button from "./ui/Button";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
+import SearchBar from "./Header/SearchBar";
 
-export function FlyoutMenu() {
+export function FlyoutMenu({ session }) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const router = useRouter();
 
@@ -57,8 +58,9 @@ export function FlyoutMenu() {
       ></div>
       <div className="fixed inset-y-0 h-full w-2/3 flex content-between">
         <div className="h-full w-full">
-          <div className="bg-white h-full flex flex-col justify-between px-4 pb-4">
-            <div className="overflow-auto row-span-9 relative flex flex-col gap-4 py-4">
+          <div className="bg-white h-full w-full flex flex-col justify-between px-4 pb-4  dark:bg-blackDark">
+            <div className="overflow-auto w-full row-span-9 relative flex flex-col gap-4 py-4">
+              <SearchBar />
               <a href="/">
                 <h1 className="uppercase font-bold text-sm">Home</h1>
               </a>
@@ -84,7 +86,24 @@ export function FlyoutMenu() {
                 ))}
               </ul>
             </div>
-            <Button action={handleSignOut}>Log Out</Button>
+            {session ? (
+              <Button action={handleSignOut}>Log Out</Button>
+            ) : (
+              <div className="flex flex-col items-center justify-center gap-2 w-full">
+                <a
+                  href="/login"
+                  className=" w-full bg-primary  px-4 py-2 text-center uppercase text-sm text-white"
+                >
+                  Login
+                  {/* <span className=" hover:bg-gray-600  w-full">
+                    </span> */}
+                </a>
+
+                <a href="/register" className="text-sm uppercase">
+                  Register
+                </a>
+              </div>
+            )}
           </div>
         </div>
       </div>

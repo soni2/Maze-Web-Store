@@ -14,7 +14,7 @@ export default function UserCart() {
     <div className="flex justify-center items-center gap-2">
       <button
         onClick={handleUserToggle}
-        className="flex items-center hover:text-primary text-black dark:text-white font-bold duration-500 py-2 px-2"
+        className="hidden sm:flex items-center hover:text-primary text-black dark:text-white font-bold duration-500 py-2 px-2"
       >
         <PersonIcon />
       </button>

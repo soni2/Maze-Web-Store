@@ -44,15 +44,22 @@ export default function Header({ session }) {
         </div>
       </header>
       <header className="bg-white w-full flex md:hidden items-center justify-between px-4 py-2  dark:text-white dark:bg-keppel-950 duration-500 overflow-hidden border-b border-gray-400 dark:border-keppel-800">
-        <button onClick={() => handleMenuToggle()}>
-          <MenuIcon />
-        </button>
-        <Link href={"/"}>
-          <LogoComponent className="w-20  dark:fill-white hover:fill-keppel-600 duration-500 dark:hover:fill-primary" />
-        </Link>
-        <button onClick={() => handleCartToggle()}>
-          <ShoppingCartIcon />
-        </button>
+        <div className="flex gap-4 items-center">
+          <button onClick={() => handleMenuToggle()}>
+            <MenuIcon />
+          </button>
+          <Link href={"/"}>
+            <LogoComponent className="w-20  dark:fill-white hover:fill-keppel-600 duration-500 dark:hover:fill-primary" />
+          </Link>
+        </div>
+        {session && (
+          <>
+            {/*<button onClick={() => handleCartToggle()}>
+            <ShoppingCartIcon />
+            </button> */}
+            <UserCart />
+          </>
+        )}
       </header>
     </>
   );
