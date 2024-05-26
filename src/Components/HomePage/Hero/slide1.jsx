@@ -19,7 +19,6 @@ export default function Slide1() {
             Captivating Women&apos;s Wear
           </h1>
         </div>
-        ``
         <div className="flex flex-col items-center md:items-end  gap-8 w-full">
           <p className="text-center md:text-right w-full mx-auto max-w-[700px] text-white md:text-xl">
             Exclusive deals waiting for you!

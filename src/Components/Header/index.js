@@ -31,7 +31,7 @@ export default function Header({ session }) {
           ) : (
             <div className="flex gap-2 items-center">
               <Link href="/login">
-                <span className="bg-primary hover:bg-gray-600 text-white px-4 py-2 rounded-md">
+                <span className="bg-primary hover:bg-gray-600 text-white px-4 py-2">
                   Login
                 </span>
               </Link>

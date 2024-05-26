@@ -201,35 +201,7 @@ export function ProductPage({
             ))}
           </div>
         </div>
-        <div className="grid gap-3 items-start order-1">
-          {/* <div className="flex md:hidden items-start">
-            <div className="grid gap-4">
-              <h1 className="font-bold text-2xl sm:text-3xl">{title}</h1>
-              <div>
-                <p>{description}</p>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-0.5">
-                  {[...Array(5)].map((star, index) => {
-                    const currentRating = index + 1;
-
-                    return (
-                      <StarIcon
-                        key={index}
-                        className={`${
-                          currentRating <= avg
-                            ? "text-yellow-400"
-                            : "text-gray-300"
-                        } h-5 w-5`}
-                      />
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-            <div className="text-4xl font-bold ml-auto">${price}</div>
-          </div> */}
-        </div>
+        <div className="grid gap-3 items-start order-1"></div>
       </div>
       <div className="grid gap-6 md:gap-12 max-w-6xl px-4">
         {/* Carousel */}
