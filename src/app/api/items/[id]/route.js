@@ -1,13 +1,22 @@
-import { products } from "@/Mocks/Products.json";
+// import { products } from "@/Mocks/Products.json";
 
 export async function GET(req, { params }) {
-  const data = params.id;
+  const url = process.env.NEXT_PUBLIC_API;
+  const id = params.id;
 
-  const product = products.find((item) => item.id === JSON.parse(data));
+  const data = await fetch(`${url}/${id}`);
+  const products = await data.json();
 
-  product.suggestion = products.filter(
-    (item) => item.category === product.category && item.id !== product.id
-  );
+  // const product = products.find((item) => item.id === JSON.parse(data));
 
-  return Response.json({ product });
+  // product.suggestion = products.filter(
+  //   (item) => item.category === product.category && item.id !== product.id
+  // );
+
+  const categoryUrl = `${process.env.NEXT_PUBLIC_API}/category/${products.category}`;
+  products.suggestions = await fetch(categoryUrl)
+    .then((res) => res.json())
+    .then((res) => res.products);
+
+  return Response.json({ product: products });
 }

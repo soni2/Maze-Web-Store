@@ -56,22 +56,26 @@ export default function Menu() {
               >
                 All
               </li>
-              {category?.map((item, index) => (
-                <li
-                  className={`py-2 text-sm pl-3 duration-200 rounded-sm uppercase hover:text-primary hover:pl-5 ${
-                    item === params &&
-                    "bg-gray-100 pl-6 hover:pl-6 font-bold dark:bg-slate-950 text-primary disabled"
-                  }`}
-                  key={index}
-                >
-                  <a
-                    className={`cursor-pointer`}
-                    onClick={() => handleCategory(item)}
+              {category?.map((item, index) => {
+                const cat = item.replace("-", " ");
+
+                return (
+                  <li
+                    className={`py-2 text-sm pl-3 duration-200 rounded-sm uppercase hover:text-primary hover:pl-5 ${
+                      item === params &&
+                      "bg-gray-100 pl-6 hover:pl-6 font-bold dark:bg-slate-950 text-primary disabled"
+                    }`}
+                    key={index}
                   >
-                    {item}
-                  </a>
-                </li>
-              ))}
+                    <a
+                      className={`cursor-pointer`}
+                      onClick={() => handleCategory(item)}
+                    >
+                      {cat}
+                    </a>
+                  </li>
+                );
+              })}
             </>
           )}
         </ul>

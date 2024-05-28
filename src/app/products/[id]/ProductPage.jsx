@@ -20,7 +20,7 @@ export function ProductPage({
   route,
   session,
   addToCart,
-  suggestion,
+  suggestions,
 }) {
   //#region State
   const [thumb, setThumb] = useState(thumbnail);
@@ -210,7 +210,7 @@ export function ProductPage({
           <Carousel
             addToCart={addToCart}
             session={session}
-            products={suggestion}
+            products={suggestions}
             id={id}
           />
         </div>

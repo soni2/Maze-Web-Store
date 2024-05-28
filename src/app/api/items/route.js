@@ -1,11 +1,15 @@
-import { products } from "@/Mocks/Products.json";
+// import { products } from "@/Mocks/Products.json";
 
 export async function GET(req) {
-  // const data = await fetch(`${process.env.NEXT_PUBLIC_API}?limit=100`).then(
-  //   (res) => res.json()
-  // );
+  const data = await fetch(`${process.env.NEXT_PUBLIC_API}?limit=200`).then(
+    (res) => res.json()
+  );
 
-  // const { products } = data;
+  const categoryData = await fetch(
+    `${process.env.NEXT_PUBLIC_API}/category-list`
+  ).then((res) => res.json());
+
+  const { products } = data;
 
   const url = new URL(req.url);
   const page = parseInt(url.searchParams.get("page")) || "1";
@@ -16,18 +20,17 @@ export async function GET(req) {
 
   if (modelCategory === undefined) {
     modelCategory = "all";
-  } else if (modelCategory === "home") {
-    modelCategory = "home-decoration";
   }
-  const modelCategoryList = [
-    ...new Set(
-      products.map((item) => {
-        const mainCategory = item.category.split("-");
 
-        return mainCategory[0];
-      })
-    ),
-  ];
+  // const modelCategoryList = [
+  //   ...new Set(
+  //     products.map((item) => {
+  //       const mainCategory = item.category.replace("-", " ");
+
+  //       return mainCategory;
+  //     })
+  //   ),
+  // ];
 
   const searchProducts = (i) => {
     return i.filter(
@@ -100,11 +103,38 @@ export async function GET(req) {
     };
   }
 
-  initialProducts.category = modelCategoryList;
+  // initialProducts.category = modelCategoryList;
   initialProducts.products = filterProduct(products).slice(
     startIndex,
     endIndex
   );
+
+  function condenseCategories(categories) {
+    let condensedCategories = [];
+    let mensCategories = new Set();
+    let womensCategories = new Set();
+
+    categories.forEach((category) => {
+      if (category.startsWith("mens-")) {
+        mensCategories.add(category.replace("mens-", ""));
+      } else if (category.startsWith("womens-")) {
+        womensCategories.add(category.replace("womens-", ""));
+      } else {
+        condensedCategories.push(category);
+      }
+    });
+
+    if (mensCategories.size > 0) {
+      condensedCategories.push("mens");
+    }
+    if (womensCategories.size > 0) {
+      condensedCategories.push("womens");
+    }
+
+    return condensedCategories;
+  }
+
+  initialProducts.category = condenseCategories(categoryData);
 
   return Response.json({ products: initialProducts });
 }

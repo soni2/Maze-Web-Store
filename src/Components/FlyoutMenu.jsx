@@ -71,19 +71,23 @@ export function FlyoutMenu({ session }) {
                 >
                   Products
                 </h1>
-                {product?.map((e, i) => (
-                  <li
-                    className="py-2  text-sm pl-3 duration-200 rounded-sm uppercase"
-                    key={i}
-                  >
-                    <a
-                      onClick={() => handleCategory(e)}
-                      //   href={`/products?page=1&minPrice=0&category=${e}`}
+                {product?.map((e, i) => {
+                  const cat = e.replace("-", " ");
+
+                  return (
+                    <li
+                      className="py-2  text-sm pl-3 duration-200 rounded-sm uppercase"
+                      key={i}
                     >
-                      {e}
-                    </a>
-                  </li>
-                ))}
+                      <a
+                        onClick={() => handleCategory(e)}
+                        //   href={`/products?page=1&minPrice=0&category=${e}`}
+                      >
+                        {cat}
+                      </a>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
             {session ? (
