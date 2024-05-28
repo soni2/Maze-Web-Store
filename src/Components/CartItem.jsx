@@ -39,7 +39,7 @@ export function CartItem({ item, updateItem, delItem }) {
       <img src={item.thumbnail} className="h-16 w-16 object-cover mr-4" />
       <div className="flex-1 col-span-3">
         <h1 className="text-sm font-bold">{item.title}</h1>
-        <span className="text-sm font-medium">${item.price}.00</span>
+        <span className="text-sm font-medium">${item.price}</span>
       </div>
       <div className="col-span-2 flex justify-center">
         <button onClick={() => removeOne(item.id, item.quantity)}>-</button>

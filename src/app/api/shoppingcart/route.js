@@ -16,9 +16,13 @@ export async function GET(req) {
   shoppingCart.products = data;
 
   if (data.length >= 2) {
-    shoppingCart.total = data.reduce((a, b) => a.price + b.price);
+    const total = data
+      .reduce((a, b) => a.price + b.price)
+      .toString()
+      .slice(0, 5);
+    shoppingCart.total = JSON.parse(total);
   } else if (data.length === 1) {
-    shoppingCart.total = data[0].price;
+    shoppingCart.total = data[0].price.splice(0, 5);
   } else {
     shoppingCart.total = 0;
   }

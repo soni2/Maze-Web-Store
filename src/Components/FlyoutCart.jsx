@@ -94,7 +94,7 @@ export function FlyoutCart({ delItem, updateItem }) {
                   <h1>Subtotal</h1>
                 </span>
                 <span>
-                  <h1>${total}.00</h1>
+                  <h1>${total}</h1>
                 </span>
               </div>
               <div className="flex justify-between">
@@ -102,7 +102,7 @@ export function FlyoutCart({ delItem, updateItem }) {
                   <h1>Shipping</h1>
                 </span>
                 <span>
-                  <h1>${shipping}.00</h1>
+                  <h1>${shipping}</h1>
                 </span>
               </div>
               <div className="flex justify-between">
@@ -110,7 +110,7 @@ export function FlyoutCart({ delItem, updateItem }) {
                   <h1>Total</h1>
                 </span>
                 <span>
-                  <h1>${total + shipping}.00</h1>
+                  <h1>${total + shipping}</h1>
                 </span>
               </div>
               <Button
