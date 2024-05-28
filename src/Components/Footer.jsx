@@ -63,7 +63,7 @@ export const Footer = () => {
             </Link>
             <Link
               className="text-gray-500 hover:text-primary duration-500 dark:text-gray-400 dark:hover:text-gray-50"
-              href="#"
+              href="http://github.com/soni2"
             >
               Contact
             </Link>
