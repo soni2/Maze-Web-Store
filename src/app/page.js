@@ -13,6 +13,11 @@ import { FlyoutMenu } from "@/Components/FlyoutMenu";
 const Featured = dynamic(() => import("@/Components/HomePage/Featured"));
 const Costumers = dynamic(() => import("@/Components/HomePage/Costumers"));
 
+export const metadata = {
+  title: "Mazed | Web Store",
+  description: "...",
+};
+
 export default async function Home() {
   const session = await getSession();
 
