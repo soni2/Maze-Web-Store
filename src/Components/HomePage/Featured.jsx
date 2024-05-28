@@ -5,6 +5,10 @@ import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
 export default async function Featured() {
+  const { products } = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/random-items`
+  ).then((res) => res.json());
+
   const addToCart = async (e) => {
     "use server";
     cookies().getAll();
@@ -40,13 +44,6 @@ export default async function Featured() {
 
   const session = await getSession();
 
-  const getRandomArray = (e, n) => {
-    const randomEl = e.slice().sort(() => Math.random - 0.5);
-    return randomEl.slice(0, n);
-  };
-
-  const initialProducts = await getRandomArray(products, 15);
-
   return (
     <section className="w-full py-12 md:py-24 lg:py-32 flex flex-col items-center justify-center space-y-2 dark:text-white px-2">
       <div className="flex flex-col items-center justify-center space-y-4 text-center">
@@ -60,12 +57,8 @@ export default async function Featured() {
         </div>
       </div>
 
-      {initialProducts ? (
-        <Carousel
-          products={initialProducts}
-          session={session}
-          addToCart={addToCart}
-        />
+      {products ? (
+        <Carousel products={products} session={session} addToCart={addToCart} />
       ) : (
         <h1>Loading</h1>
       )}
