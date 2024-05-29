@@ -30,7 +30,7 @@ export function CartItem({ key, item, updateItem, delItem }) {
 
   return (
     <li
-      key={key}
+      key={item.id}
       className={`grid grid-cols-7 items-center py-3 border-solid border-b-[1px] border-blackjustify-between gap-3 duration-500 ${
         loading && "opacity-45 cursor-wait pointer-events-none"
       }`}
