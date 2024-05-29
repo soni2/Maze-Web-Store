@@ -5,6 +5,7 @@ import Input from "@/Components/ui/Input";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Button from "./ui/Button";
 
 export const LoginForm = () => {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
@@ -54,15 +55,12 @@ export const LoginForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex relative flex-col gap-4 w-full"
+      className="flex relative flex-col gap-4 w-full "
     >
       {loading && (
-        <div className="bg-slate-50/80 animate-pulse absolute w-full h-full z-50" />
+        <div className="bg-slate-50/80 animate-pulse absolute w-full h-full z-50 dark:bg-blackDark" />
       )}
-      <label
-        htmlFor="email"
-        className="block text-xs font-semibold text-gray-600 uppercase"
-      >
+      <label htmlFor="email" className="block text-xs font-semibold uppercase">
         Email
       </label>
       <Input
@@ -70,11 +68,10 @@ export const LoginForm = () => {
         name="email"
         placeholder="username@site.com"
         action={handleEmail}
-        className="text-black px-3 py-2"
       />
       <label
         htmlFor="password"
-        className="block text-xs font-semibold text-gray-600 uppercase"
+        className="block text-xs font-semibolduppercase"
       >
         Password
       </label>
@@ -85,12 +82,7 @@ export const LoginForm = () => {
         placeholder="•••••••"
         action={handlePassword}
       />
-      <button
-        type="submit"
-        className="w-full bg-white dark:bg-black p-4 rounded-md hover:bg-gray-500"
-      >
-        Log in
-      </button>
+      <Button type="submit">Log in</Button>
     </form>
   );
 };
