@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 
-export function CartItem({ item, updateItem, delItem }) {
+export function CartItem({ key, item, updateItem, delItem }) {
   const [loading, setLoading] = useState(item.loading);
 
   function deleteIt(id) {
@@ -30,7 +30,7 @@ export function CartItem({ item, updateItem, delItem }) {
 
   return (
     <li
-      key={item.id}
+      key={key}
       className={`grid grid-cols-7 items-center py-3 border-solid border-b-[1px] border-blackjustify-between gap-3 duration-500 ${
         loading && "opacity-45 cursor-wait pointer-events-none"
       }`}

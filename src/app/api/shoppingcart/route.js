@@ -16,13 +16,11 @@ export async function GET(req) {
   shoppingCart.products = data;
 
   if (data.length >= 2) {
-    const total = data
-      .reduce((a, b) => a.price + b.price)
-      .toString()
-      .slice(0, 5);
-    shoppingCart.total = JSON.parse(total);
+    const total = data.reduce((a, b) => a + b.price * b.quantity, 0);
+
+    shoppingCart.total = total;
   } else if (data.length === 1) {
-    shoppingCart.total = data[0].price.splice(0, 5);
+    shoppingCart.total = data[0].price * data[0].quantity;
   } else {
     shoppingCart.total = 0;
   }
