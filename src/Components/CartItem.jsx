@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 
-export function CartItem({ key, item, updateItem, delItem }) {
+export function CartItem({ item, updateItem, delItem }) {
   const [loading, setLoading] = useState(item.loading);
 
   function deleteIt(id) {
