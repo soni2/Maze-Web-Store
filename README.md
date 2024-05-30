@@ -2,7 +2,17 @@
 
 This is a Work in progress personal project, It needs some refinement both visually and functionally.
 
-For a live view of the project you could [check this link](http://mazed.vercel.app)
+For a live view of the project you could [check this link](http://mazed.vercel.app).
+
+## Tools
+
+The following are a list of dependencies, libraries and tools used for this project:
+
+    -Supabase
+    -Tailwind
+    -Material UI
+    -Next-Theme
+    -Swiper
 
 ## Getting Started
 
