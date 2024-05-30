@@ -6,7 +6,7 @@ For a live view of the project you could [check this link](http://mazed.vercel.a
 
 ## Tools
 
-The following are a list of dependencies, libraries and tools used for this project:
+Below is a list of dependencies, libraries and tools used for this project:
 
     -Supabase
     -Tailwind
