@@ -4,6 +4,8 @@ This is a Work in progress personal project, It needs some refinement both visua
 
 For a live view of the project you could [check this link](http://mazed.vercel.app).
 
+Also, due to lack of activity, supabase deleted the whole backend, so login, register, feedbacks and add to cart function doesn't work.
+
 ## Tools
 
 Below is a list of dependencies, libraries and tools used for this project:
@@ -19,7 +21,7 @@ Below is a list of dependencies, libraries and tools used for this project:
 First, run the development server:
 
 ```bash
-npm run devDisclaimer
+npm run dev
 # or
 yarn dev
 # or
