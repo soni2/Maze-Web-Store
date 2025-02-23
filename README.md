@@ -4,7 +4,7 @@ This is a Work in progress personal project, It needs some refinement both visua
 
 For a live view of the project you could [check this link](http://mazed.vercel.app).
 
-Also, due to lack of activity, supabase deleted the whole backend, so login, register, feedbacks and add to cart function doesn't work.
+Also, due to lack of activity, supabase took down the entire backend, so login, register, feedbacks and add to cart function doesn't work.
 
 ## Tools
 
